@@ -1,28 +1,11 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <% include head %>
-</head>
-<body>
-  <header>
-        <% include menu %>
-  </header>
-  <main>
-    <section id="post_form_area" style="display:none">
-      <% include restpostform %>
-    
-    </section>
-
-    <section id="api_area" style="display:none">
-      <% include apidescr %>
-    </section>
-
-    <section id="msg_area" style="display:block">
-      <% include main %>
-    </section>
-  </main>
-  <footer>
-        <% include footer %>
-  </footer>
-</body>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+  </body>
 </html>
