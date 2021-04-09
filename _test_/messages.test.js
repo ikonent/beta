@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
 
-describe("Test messages POST", () => {
+/*describe("Test messages POST", () => {
    test("Response to the POST/messages", () => {
       return request(app)
          .post("/messages")
@@ -14,7 +14,7 @@ describe("Test messages POST", () => {
          .expect(403);
 
    });
-});
+});*/
 
 
 
@@ -31,14 +31,14 @@ describe("Test messages POST", () => {
 });*/
 
 
-/*describe("Test messages GET", () => {
+describe("Test messages GET", () => {
    test("Response to the GET/messages", () => {
       return request(app)
          .get("/messages")
          //.set("Content-Type", "aplication/json")
          .expect(200)
    });
-});*/
+});
 
 
 /*describe("Test messages DELETE by ID when user is registered", () => {
