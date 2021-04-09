@@ -6,7 +6,9 @@
     "start": "node ./bin/www",
     "test": "jest"
   },
-   "engines":{"node": "14.15.4"},
+  /*"engines": {
+    "node": "14.15.4"*/
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
