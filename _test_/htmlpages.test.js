@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
 
-describe("Test the root path", () => {
+/*describe("Test the root path", () => {
    test("Response to the GET /", () => {
       return request(app)
          .get("/")
@@ -9,7 +9,7 @@ describe("Test the root path", () => {
          .expect("Content-Type", /html/)
          .expect(200);
    });
-});
+});*/
 
 describe("Test the about", () => {
    test("Response to the GET about", () => {
@@ -31,7 +31,7 @@ describe("Test the about", () => {
    });
 });*/
 
-describe("Test the registartion", () => {
+/*describe("Test the registartion", () => {
    test("Response to the GET register", () => {
       return request(app)
          .get("/users/register")

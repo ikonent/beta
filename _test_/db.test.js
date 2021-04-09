@@ -38,14 +38,14 @@ describe('Test the database methods', () => {
 
 
 
-describe('Test the database methods', () => {
+/*describe('Test the database methods', () => {
 	it('testing db.deleteMessageById function', () => {
 		var id = 492;
 		return db.deleteMessageById(id, function(data) {
 			expect(data.id).toBe(0);
-			/*expect(data.sender).toBe("");
-			expect(data.topic).toBe("");
-			expect(data.message).toBe("");*/
+			//expect(data.sender).toBe("");
+			//expect(data.topic).toBe("");
+			//expect(data.message).toBe("");
 		});
 	});
 });
@@ -62,4 +62,4 @@ describe('Test the database methods', () => {
 			expect(data.message).toBe("verifyUserId");
 		});
 	});
-});
+});*/
