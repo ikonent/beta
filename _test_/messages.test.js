@@ -12,6 +12,7 @@ describe("Test messages POST", () => {
          	"topic"  : "test"
          })
          .expect(403);
+         .done();
    });
 });
 

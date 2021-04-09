@@ -18,6 +18,7 @@ describe("Test the about", () => {
          .set("Accept", "text/html")
          .expect("Content-Type", /html/)
          .expect(200);
+         .done();
    });
 });
 

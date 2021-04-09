@@ -6,6 +6,7 @@ describe('Test the database methods', () => {
 	it('testing db.findMessages function', () => {
 		return db.findMessages(function(data) {
 			expect(typeof(data)).toBe("object");
+			done();
 		});
 	});
 });
