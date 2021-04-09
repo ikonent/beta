@@ -21,7 +21,7 @@ describe("Test the about", () => {
    });
 });
 
-describe("Test the login", () => {
+/*describe("Test the login", () => {
    test("Response to the GET login", () => {
       return request(app)
          .get("/users/login")
@@ -29,7 +29,7 @@ describe("Test the login", () => {
          .expect("Content-Type", /html/)
          .expect(200);
    });
-});
+});*/
 
 describe("Test the registartion", () => {
    test("Response to the GET register", () => {

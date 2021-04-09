@@ -28,17 +28,17 @@ describe("Test messages POST", () => {
 });*/
 
 
-describe("Test messages GET", () => {
+/*describe("Test messages GET", () => {
    test("Response to the GET/messages", () => {
       return request(app)
          .get("/messages")
          //.set("Content-Type", "aplication/json")
          .expect(200)
    });
-});
+});*/
 
 
-describe("Test messages DELETE by ID when user is registered", () => {
+/*describe("Test messages DELETE by ID when user is registered", () => {
    test("Response to the DELETE/message", () => {
       return request(app)
          .delete("/messages/493")
@@ -46,55 +46,6 @@ describe("Test messages DELETE by ID when user is registered", () => {
          .expect(201)
    });
 });
-describe("Test messages DELETE by ID when user is registered", () => {
-   test("Response to the DELETE/message", () => {
-      return request(app)
-         .delete("/messages/494")
-         //.set("Content-Type", "aplication/json",)
-         .expect(201)
-   });
-});
-describe("Test messages DELETE by ID when user is registered", () => {
-   test("Response to the DELETE/message", () => {
-      return request(app)
-         .delete("/messages/495")
-         //.set("Content-Type", "aplication/json",)
-         .expect(201)
-   });
-});
-describe("Test messages DELETE by ID when user is registered", () => {
-   test("Response to the DELETE/message", () => {
-      return request(app)
-         .delete("/messages/496")
-         //.set("Content-Type", "aplication/json",)
-         .expect(201)
-   });
-});
-describe("Test messages DELETE by ID when user is registered", () => {
-   test("Response to the DELETE/message", () => {
-      return request(app)
-         .delete("/messages/500")
-         //.set("Content-Type", "aplication/json",)
-         .expect(201)
-   });
-});
-describe("Test messages DELETE by ID when user is registered", () => {
-   test("Response to the DELETE/message", () => {
-      return request(app)
-         .delete("/messages/505")
-         //.set("Content-Type", "aplication/json",)
-         .expect(201)
-   });
-});
-describe("Test messages DELETE by ID when user is registered", () => {
-   test("Response to the DELETE/message", () => {
-      return request(app)
-         .delete("/messages/499")
-         //.set("Content-Type", "aplication/json",)
-         .expect(201)
-   });
-});
-
 
 
 /*describe("Test messages DELETE by ID when user is not registered", () => {
@@ -109,7 +60,7 @@ describe("Test messages DELETE by ID when user is registered", () => {
 
 
 
-describe("Test GET message by ID", () => {
+/*describe("Test GET message by ID", () => {
    test("Response to the get('/:id/:message')", () => {
       return request(app)
          .get("/messages/430/message")
@@ -117,7 +68,7 @@ describe("Test GET message by ID", () => {
          .expect(200)
    });
 });
-
+*/
 
 
 
