@@ -63,12 +63,13 @@ router.get('/:id', function(req, res, next) {
             console.log(req.params.id + " here are params")
             res.json(data[i])
     }}
-      //res.status(403).send({error: "Viestin löytäminen epäonnistui! Paina logo jatkaaksesti."});
+      res.status(403).send({error: "Viestin löytäminen epäonnistui! Paina logo jatkaaksesti."});
     });
 });
 
 
-router.get('/:id/:message', function(req, res, next) {
+//commented out to rest the pipeline speed*/
+/*router.get('/:id/:message', function(req, res, next) {
     db.findMessageById(req.params.message, function (data) {
 
       for(var i=0; (i < data.length); i++) {
@@ -80,7 +81,7 @@ router.get('/:id/:message', function(req, res, next) {
     }}
       //res.status(403).send({error: "Viestin löytäminen epäonnistui! Paina logo jatkaaksesti."});
     });
-});
+});*/
 
 
 router.patch('/:id', function(req, res, next) {
