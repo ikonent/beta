@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <% include head %>
+  </head>
+  <body class="container-fluid">
+        <% include header %>
+        <% include hallinta %>
+    
+    <main class="flex justify-content-center flex-column">
+        
+         <script>
+                function varmista(){
+                    if(confirm("Ole siivosti!")) {
+                        if (!document.getElementById("ohjeetluettu").checked) {
+                            document.getElementById("ohjeetluettu").checked=true;
+                        }
+                    }
+                }
+            </script>
+        
+        <nav class="serif row"><a href="/">Aiheet</a>&nbsp;> Luo uusi tunnus
+        </nav>
+        <h2  class="serif">Luo uusi käyttäjätunnus</h2>
+        <form method='POST' action='/kayttajat/kirjautuminen'>
+            <div>
+                <label for="userid" class="serif">Käyttäjätunnus</label><br>
+                <input type="text" placeholder="Tunnus" name="userid" required="true" value=""><br>
+                <label for="passwd"  class="serif">Salasana</label><br>
+                <input type="password" placeholder="Salasana" name="passwd" required='true' value=""><br>
+                <label for="pwd2" class="serif">Anna salasana uudelleen</label><br>
+                <input id="pwd2" requied="true" type="password" name="pwd2" placeholder="" value=""><br>
+                <input id="ohjeetluettu" name="ohjeetluettu" required="true" type="checkbox">
+                <label for="ohjeetluettu" on  class="serif">Olen lukenut <a onclick="varmista()" href=""  class="serif" >foorumin ohjeet</a></label><br>
+            </div>
+            <button type="submit" class="serif btn btn-dark m-2" onclick="window.location='http:/';return false;" Value="Peru">Peru</button>
+            <button id="submit" type="submit" class="serif btn btn-dark" name="LuoTunnus" value="Luo tili">Luo käyttäjätunnus</button>
+            
+           
+        </form>
+    </main>
+        <% include footer %>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <% include head %>
+  </head>
+  <body class="container-fluid">
+        <% include header %>
+        <% include hallinta %>
+    
+    <main class="flex justify-content-center flex-column">
+        <nav class="serif row"><a href="/">Aiheet</a>&nbsp;> Kirjaudu <%- (login==null)?"sisään":"ulos" %>
+        </nav>
+        <h2  class="serif">Kirjaudu foorumille</h2>
+        <form method='POST' action='/kayttajat/kirjautuminen'>
+            <div>
+                <label for="userid" class="serif">Käyttäjätunnus</label><br>
+                <input type="text" placeholder="Tunnus" name="userid" required="true" value=""><br>
+                <label for="passwd"  class="serif">Salasana</label><br>
+                <input type="password" placeholder="Salasana" name="passwd" required='true' value="">
+            </div>
+            <button type="submit" class="serif btn btn-dark m-2" onclick="window.location='http:/';return false;" Value="Peru">Peru</button>
+            <button id="submit" type="submit" class="serif btn btn-dark" name="kirjaudu" value="Kirjaudu">Kirjaudu</button>
+            
+           
+        </form>
+    </main>
+        <% include footer %>
+  </body>
+</html>
