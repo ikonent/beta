@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
     }
 
     if(req.query.h_uusin!= undefined){
-        console.log(req.query.h_uusin);
+        //console.log(req.query.h_uusin);
         req.session.h_uusin = (req.query.h_uusin=='true');
 
     } else if (req.session.h_uusin === undefined) {

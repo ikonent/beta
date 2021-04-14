@@ -48,7 +48,7 @@
         <%-(!onLogPage)?'<a id="" href="/kayttajat/kirjautuminen">':'<span>'%>
         <?xml version="1.0" encoding="UTF-8"?>
         <!-- Logout symboli  -->
-        <svg class="symboli <%-(login==null)?"":"hidden"%>" id="logout" width="50" height="50" version="1.1" viewBox="0 0 13.229 13.229" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <svg class="symboli <%-(login!=null)?"":"hidden"%>" id="logout" width="50" height="50" version="1.1" viewBox="0 0 13.229 13.229" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
             <metadata>
                 <rdf:RDF>
                     <cc:Work rdf:about="">
@@ -60,8 +60,8 @@
             </metadata>
             <path id="kuvio" transform="scale(.26458)" d="m30 4.5762-25 5.3867v35.076l25-5.3867v-10.064l-3.5801 0.83984v5.9316l-17.84 3.8438v-26.947l17.84-3.8437v5.5898l3.5801-0.8418v-9.584zm2.3281 11.693c-0.30694-0.0063-0.45983 0.41192-0.23633 0.64648 0.64734 0.68203 1.1419 1.4822 1.5117 2.3379l-14.768 3.1816v4.0664l15.451-3.3301c-0.05782 0.93868-0.25424 1.874-0.63086 2.7578-0.14133 0.33564 0.19439 0.67136 0.47852 0.47852l10.703-7.2031c0.2671-0.17983 0.18878-0.63305-0.11914-0.68945l-12.342-2.2402c-0.01613-0.0033-0.032448-0.00516-0.048828-0.00586z" fill="#f2f2f2"/>
         </svg>
-        <!-- Logoin symboli -->
-        <svg class="symboli <%-(login==null)?"hidden":""%>" id="login" width="50" height="50" version="1.1" viewBox="0 0 13.229 13.229" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <!-- Login symboli -->
+        <svg class="symboli <%-(login!=null)?"hidden":""%>" id="login" width="50" height="50" version="1.1" viewBox="0 0 13.229 13.229" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
             <metadata>
                 <rdf:RDF>
                     <cc:Work rdf:about="">
