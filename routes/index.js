@@ -78,7 +78,7 @@ router.get('/keskustelu_aiheesta', function(req, res) {
     }
 
     if(req.query.h_uusin!= undefined){
-        console.log(req.query.h_uusin);
+        //console.log(req.query.h_uusin);
         req.session.h_uusin = (req.query.h_uusin=='true');
 
     } else if (req.session.h_uusin === undefined) {
@@ -93,8 +93,8 @@ router.get('/keskustelu_aiheesta', function(req, res) {
     }
 
     if(req.query.delid != undefined){
-        console.log("poistetaan id: "+req.query.delid);
-        db.deleteMessage(req.query.delid,function(rvalue) {
+        //console.log("poistetaan id: "+req.query.delid);
+        db.deleteMessage(req.query.delid,req.session.userid,function(rvalue) {
             if(rvalue && req.query.id != undefined){
                 console.log("Onnistui?! paluu keskusteluun.");
                 return res.redirect('./?id='+req.query.id);
@@ -128,10 +128,11 @@ router.get('/keskustelu_aiheesta', function(req, res) {
 });
 
 router.get('/uusi_viesti', function(req, res, next) {
+    // Jos käyttäjä ei ole kirjautunut, ei voi kirjoittaa viestiä
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
     }
-
+    // jos aihe on määritelty, on kirjoittaja jatkamassa viestiketjuun
     if(req.query.topic != undefined){
         db.findTopic(req.query.topic,function(msg) {
             return res.render('uusi_viesti', { title: 'Jatka keskustelua',
@@ -149,9 +150,9 @@ router.get('/uusi_viesti', function(req, res, next) {
                                               h_tiivis:req.session.h_tiivis,
                                               p_tietoa:true });
         });
-
+    // Jos on määritelty muokkaa-arvo, kirjoittaja haluaa muokata vanhaa viestiä
     } else if (req.query.muokkaa !=undefined){
-        db.findSingleMsg(req.query.muokkaa,function(msg) {
+        db.findSingleMsg(req.query.muokkaa,req.session.userid,function(msg) {
             return res.render('uusi_viesti', { title: 'Muokkaa viestiä',
                                               login: req.session.userid,
                                               msgTopic:msg[0].topic,
@@ -168,8 +169,8 @@ router.get('/uusi_viesti', function(req, res, next) {
                                               p_tietoa:true });
         });
     } else {
-
-
+        // Muussa tapauksessa kirjoittaja aloittaa uuden viestiketjun
+        
 
         return res.render('uusi_viesti', { title: 'Kirjoita uusi viesti',
                                           login: req.session.userid,

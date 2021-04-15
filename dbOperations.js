@@ -17,7 +17,7 @@ module.exports = {
         });
         let suunta =(suunt)?"ASC":"DESC";
 
-        console.log(typeof(suunt)+" "+suunta);
+        // console.log(typeof(suunt)+" "+suunta);
         con.connect(err => {
             if (err) return callback(null);
 
@@ -119,7 +119,7 @@ module.exports = {
         });
     },
 
-    findSingleMsg : function(iidee, callback) {
+    findSingleMsg : function(iidee,userid, callback) {
         var con = mariadb.createConnection({
             host: hostname,
             user: dbUser,
@@ -128,8 +128,8 @@ module.exports = {
         });
         con.connect(err => {
             if (err) return callback(null);
-
-            con.query("SELECT * FROM messages WHERE id="+iidee, (err, data) => {
+            
+            con.query("SELECT * FROM messages WHERE id="+iidee+" AND sender='"+userid+"'", (err, data) => {
                 if(err) return callback(null);
                 con.close();
                 return callback(data);
@@ -175,7 +175,7 @@ module.exports = {
             if (err) {
                 return callback(false);
             } else {
-                con.query("UPDATE messages SET message='"+req.message+"' WHERE id="+req.muokkaa, (err, result) => {
+                con.query("UPDATE messages SET message='"+req.message+"' WHERE id="+req.muokkaa+" AND SENDER='"+req.sender+"'", (err, result) => {
                     if (err) return callback(false);
                     con.query("COMMIT", (err, ans) => {;
                                                        con.query("SELECT * FROM messages", (err, data) => {
@@ -189,7 +189,7 @@ module.exports = {
         });
     },
 
-    deleteMessage : function (delid, callback ) {
+    deleteMessage : function (delid, userid, callback ) {
         const con = mariadb.createConnection({
             host: hostname,
             user: dbUser,
@@ -200,7 +200,7 @@ module.exports = {
         con.connect(err => {
             if (err) return callback(null);
             // Poimitaan otsikot, viestien määrä sekä uusimman viestin id ja lähettäjä
-            con.query("DELETE FROM messages WHERE id="+delid, (err, data) => {
+            con.query("DELETE FROM messages WHERE id="+delid+" AND SENDER='"+userid+"'", (err, data) => {
                 if(err) return callback(null);
                 con.query("COMMIT", (err, ans) => {;
                                                    con.query("SELECT * FROM messages", (err, data) => {
