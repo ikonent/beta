@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test:ci": "npm run test --config ./jest.config.json –detectOpenHandles"
+    "test:ci": "jest --config ./jest.config.json –detectOpenHandles -ci=false"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
