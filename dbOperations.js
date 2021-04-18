@@ -28,6 +28,28 @@ module.exports = {
             });
         });
     },
+    
+    // Käyttäjän viestien haku tietokannasta
+    findUserMsgs : function(userid,suunt, callback) {
+        var con = mariadb.createConnection({
+            host: hostname,
+            user: dbUser,
+            password: dbPasswd,
+            database: msgDb
+        });
+        let suunta =(suunt)?"ASC":"DESC";
+
+        // console.log(typeof(suunt)+" "+suunta);
+        con.connect(err => {
+            if (err) return callback(null);
+
+            con.query("SELECT * FROM messages WHERE sender='"+userid+"' ORDER BY id "+suunta, (err, data) => {
+                if(err) return callback(null);
+                con.close();
+                return callback(data);
+            });
+        });
+    },
     /*
 
     Tämä on jemma, jos menee pieleen
@@ -113,7 +135,7 @@ module.exports = {
             con.query("SELECT topic FROM messages WHERE id="+iidee, (err, data) => {
                 if(err) return callback(null);
                 con.close();
-                console.log("etsi otsikko "+data);
+                //console.log("etsi otsikko "+data);
                 return callback(data);
             });
         });

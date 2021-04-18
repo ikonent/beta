@@ -96,15 +96,15 @@ router.get('/keskustelu_aiheesta', function(req, res) {
         //console.log("poistetaan id: "+req.query.delid);
         db.deleteMessage(req.query.delid,req.session.userid,function(rvalue) {
             if(rvalue && req.query.id != undefined){
-                console.log("Onnistui?! paluu keskusteluun.");
+                //console.log("Onnistui?! paluu keskusteluun.");
                 return res.redirect('./?id='+req.query.id);
 
             } else if (req.query.id === undefined){
 
-                console.log("Onnistui?! paluu juureen.");
+                //console.log("Onnistui?! paluu juureen.");
                 return res.redirect('/');
             } else {
-                console.log("Pieleen meni");
+                //console.log("Pieleen meni");
             }
         });
     } else if(req.query.id!= undefined){
@@ -192,7 +192,7 @@ router.get('/uusi_viesti', function(req, res, next) {
 router.post('/uusi_viesti', function(req, res, next) {
     console.log(req.body);
     if(req.body.muokkaa.length >0) {
-        console.log("Edit-tallennus.");
+        //console.log("Edit-tallennus.");
         db.editMessage(req.body, function(rvalue) {
             if(rvalue)
                 return res.redirect('/keskustelu_aiheesta/?id='+req.body.muokkaa);
@@ -200,14 +200,15 @@ router.post('/uusi_viesti', function(req, res, next) {
                 console.log("Pieleen meni");
         });
     } else {
-        console.log("Uuden viestin tallennus.");
+        //console.log("Uuden viestin tallennus.");
         db.createMessage(req.body, function(rvalue) {
             if(rvalue && req.body.topikki.length ==0)
                 return res.redirect('/');
             else if (rvalue)
                 return res.redirect('/keskustelu_aiheesta/?id='+req.body.topikki);
-            else
-                console.log("Pieleen meni");
+            else {
+                //console.log("Pieleen meni");
+            }
         });
     }
 });
