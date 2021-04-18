@@ -22,7 +22,7 @@ describe("Testing msg functionalities", () => {
         };
         const tulos = request(app).post('./uusi_viesti').send(viesti).then(res => callback(res));
         // callback palauttaa tuloksen sinne, mistä funktiota kutsuttiin
-        }, 500);
+        }, 5000);
     }
     
     
@@ -39,7 +39,7 @@ describe("Testing msg functionalities", () => {
         };
         const tulos = request(app).post('./uusi_viesti/?muokkaa='+viestiId).send(viesti).then(res => callback(res));
         // callback palauttaa tuloksen sinne, mistä funktiota kutsuttiin
-        }, 500);
+        }, 5000);
     }
     
     // Callback: viestin muokkaaminen
@@ -50,7 +50,7 @@ describe("Testing msg functionalities", () => {
         const tulos = request(app).get('./keskustelu_aiheesta/?delid='+viestiId)
         .then(res => callback(res));
         // callback palauttaa tuloksen sinne, mistä funktiota kutsuttiin
-        }, 500);
+        }, 5000);
     }
     
    it('Pitäisi lähettää uusi viesti', done => {

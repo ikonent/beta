@@ -33,7 +33,7 @@ router.get('/', function(req, res, next) {
     }
     //console.log("jotain tapahtu "+req.session.h_uusin);
     db.findTitles(req.session.h_uusin,function(msg) {
-        return res.render('index', {
+        return res.status(200).render('index', {
             title: 'Kaikki viestit',
             login: req.session.userid,
             messages: msg,
@@ -57,7 +57,7 @@ router.get('/tietoa', function(req, res) {
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
     }
-    return res.render('tietoa', { title: 'Ruotijat - tietoa',
+    return res.status(200).render('tietoa', { title: 'Ruotijat - tietoa',
                                  login: req.session.userid,                            
                                  onLogPage:false,
                                  onSignPage:false,
@@ -97,19 +97,19 @@ router.get('/keskustelu_aiheesta', function(req, res) {
         db.deleteMessage(req.query.delid,req.session.userid,function(rvalue) {
             if(rvalue && req.query.id != undefined){
                 //console.log("Onnistui?! paluu keskusteluun.");
-                return res.redirect('./?id='+req.query.id);
+                return res.status(302).redirect('./?id='+req.query.id);
 
             } else if (req.query.id === undefined){
 
                 //console.log("Onnistui?! paluu juureen.");
-                return res.redirect('/');
+                return res.status(302).redirect('/');
             } else {
                 //console.log("Pieleen meni");
             }
         });
     } else if(req.query.id!= undefined){
         db.findMessages(req.query.id,req.session.h_uusin,function(msg) {
-            return res.render('keskustelu_aiheesta', { title: 'Keskustelu',
+            return res.status(200).render('keskustelu_aiheesta', { title: 'Keskustelu',
                                                       login: req.session.userid,
                                                       messages:msg,
                                                       onLogPage:false,
@@ -123,7 +123,7 @@ router.get('/keskustelu_aiheesta', function(req, res) {
                                                       p_tietoa:true });
         });
     } else {
-        return res.redirect('/');
+        return res.status(302).redirect('/');
     }
 });
 
@@ -135,7 +135,7 @@ router.get('/uusi_viesti', function(req, res, next) {
     // jos aihe on määritelty, on kirjoittaja jatkamassa viestiketjuun
     if(req.query.topic != undefined){
         db.findTopic(req.query.topic,function(msg) {
-            return res.render('uusi_viesti', { title: 'Jatka keskustelua',
+            return res.status(200).render('uusi_viesti', { title: 'Jatka keskustelua',
                                               login: req.session.userid,
                                               msgTopic:msg[0].topic,
                                               msg:'',
@@ -153,7 +153,7 @@ router.get('/uusi_viesti', function(req, res, next) {
     // Jos on määritelty muokkaa-arvo, kirjoittaja haluaa muokata vanhaa viestiä
     } else if (req.query.muokkaa !=undefined){
         db.findSingleMsg(req.query.muokkaa,req.session.userid,function(msg) {
-            return res.render('uusi_viesti', { title: 'Muokkaa viestiä',
+            return res.status(200).render('uusi_viesti', { title: 'Muokkaa viestiä',
                                               login: req.session.userid,
                                               msgTopic:msg[0].topic,
                                               msg:msg[0].message,
@@ -172,7 +172,7 @@ router.get('/uusi_viesti', function(req, res, next) {
         // Muussa tapauksessa kirjoittaja aloittaa uuden viestiketjun
         
 
-        return res.render('uusi_viesti', { title: 'Kirjoita uusi viesti',
+        return res.status(200).render('uusi_viesti', { title: 'Kirjoita uusi viesti',
                                           login: req.session.userid,
                                           onLogPage:false,
                                           onSignPage:false,
@@ -190,24 +190,25 @@ router.get('/uusi_viesti', function(req, res, next) {
 });
 
 router.post('/uusi_viesti', function(req, res, next) {
-    console.log(req.body);
+    //console.log(req.body);
     if(req.body.muokkaa.length >0) {
         //console.log("Edit-tallennus.");
         db.editMessage(req.body, function(rvalue) {
             if(rvalue)
-                return res.redirect('/keskustelu_aiheesta/?id='+req.body.muokkaa);
+                return res.status(302).redirect('/keskustelu_aiheesta/?id='+req.body.muokkaa);
             else
-                console.log("Pieleen meni");
+                return res.status(400).send("Jotain meni pieleen.");
+                //console.log("Pieleen meni");
         });
     } else {
         //console.log("Uuden viestin tallennus.");
         db.createMessage(req.body, function(rvalue) {
             if(rvalue && req.body.topikki.length ==0)
-                return res.redirect('/');
+                return res.status(302).redirect('/');
             else if (rvalue)
-                return res.redirect('/keskustelu_aiheesta/?id='+req.body.topikki);
+                return res.status(302).redirect('/keskustelu_aiheesta/?id='+req.body.topikki);
             else {
-                //console.log("Pieleen meni");
+                return res.status(400).send("Jotain meni pieleen.");
             }
         });
     }

@@ -13,7 +13,7 @@ router.get('/kirjautuminen', function(req, res, next) {
     }
     
 	if( req.session.userid == null )
-		return res.render('kirjautuminen', {
+		return res.status(200).render('kirjautuminen', {
 			title: 'Kirjaudu',
 			login: req.session.userid,
             onLogPage:true,
@@ -28,7 +28,7 @@ router.get('/kirjautuminen', function(req, res, next) {
 		});
 	else {
 		req.session.destroy();
-		return res.redirect('/');
+		return res.status(302).redirect('/');
 	}
 });
 
@@ -42,7 +42,7 @@ router.get('/rekisteroityminen', function(req, res, next) {
     }
     
 	if( req.session.userid == null )
-		return res.render('rekisteroityminen', {
+		return res.status(200).render('rekisteroityminen', {
 			title: 'Luo Käyttäjätunnus',
 			login: req.session.userid,
             onLogPage:false,
@@ -57,29 +57,29 @@ router.get('/rekisteroityminen', function(req, res, next) {
 		});
 	else {
 		req.session.destroy();
-		return res.redirect('/');
+		return res.status(302).redirect('/');
 	}
 });
 
 router.post('/kirjautuminen', (req, res) => {
     db.verifyUserId(req, function (data) {
         if (data == "Access denied") {
-            return res.render('alert', {
+            return res.status(500).render('alert', {
                 title: 'Tietokantaan ei saa nyt yhteyttä. Yritä myöhemmin uudestaan.'
             });	
         } else if (data == "not exist") {
-            return res.render('register', {
+            return res.status(404).render('register', {
                 title: 'Tietojasi ei löytynyt. Rekisteröidy ennen käyttöä!'
             });
         } else if (data == "not valid") {
-            return res.render('alert', {
-                title: 'Salasana ei täsmää?'
+            return res.status(406).render('alert', {
+                title: 'Salasana ei täsmää!'
             });	
         } else if (data == "exist") {
             req.session.userid = req.body.userid;
-            return res.redirect('/');
+            return res.status(302).redirect('/');
         } else {
-            return res.render('error', {
+            return res.status(400).render('error', {
                 message: 'Virhetoiminto: Ota yhteyttä järjestelmän ylläpitäjään',
                 error: data
             });
@@ -91,18 +91,18 @@ router.post('/rekisteroityminen', (req, res) => {
         db.registerUser(req, function(data) {
             switch(data) {
                 case "Access denied":
-                    return res.render('alert', {
+                    return res.status(500).render('alert', {
                         title: 'Tietokantaan ei saa nyt yhteyttä. Yritä myöhemmin uudestaan.'
                     });	
                     break;
                 case "Username already exists":
-                    return res.render('alert', {
+                    return res.status(409).render('alert', {
                         title: 'Samanniminen käyttäjä on jo olemassa.'
                     });	
                     break;
                 default:
                     req.session.userid = req.body.userid;
-                    return res.redirect('/');
+                    return res.status(302).redirect('/');
             }
         });
 });
