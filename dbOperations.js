@@ -173,7 +173,7 @@ module.exports = {
             } else {
                 con.query("INSERT INTO messages (sender, topic, message) values( ?, ?, ?)", [req.sender, req.topic, req.message], (err, result) => {
                     if (err) return callback(false);
-                    con.query("COMMIT", (err, ans) => {;
+                    con.query("COMMIT", (err, ans) => {
                                                        con.query("SELECT * FROM messages", (err, data) => {
                                                            if (err) return callback(false);
                                                            con.close();
@@ -199,7 +199,7 @@ module.exports = {
             } else {
                 con.query("UPDATE messages SET message='"+req.message+"' WHERE id="+req.muokkaa+" AND SENDER='"+req.sender+"'", (err, result) => {
                     if (err) return callback(false);
-                    con.query("COMMIT", (err, ans) => {;
+                    con.query("COMMIT", (err, ans) => {
                                                        con.query("SELECT * FROM messages", (err, data) => {
                                                            if (err) return callback(false);
                                                            con.close();
@@ -224,7 +224,7 @@ module.exports = {
             // Poimitaan otsikot, viestien määrä sekä uusimman viestin id ja lähettäjä
             con.query("DELETE FROM messages WHERE id="+delid+" AND SENDER='"+userid+"'", (err, data) => {
                 if(err) return callback(null);
-                con.query("COMMIT", (err, ans) => {;
+                con.query("COMMIT", (err, ans) => {
                                                    con.query("SELECT * FROM messages", (err, data) => {
                                                        if (err) return callback(false);
                                                        con.close();

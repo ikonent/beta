@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
     //console.log(req);
     //console.log(res);
     //console.log(req.query);
-
+    console.log(req.session);
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
     }
@@ -192,7 +192,7 @@ router.get('/uusi_viesti', function(req, res, next) {
 router.post('/uusi_viesti', function(req, res, next) {
     //console.log(req.body);
     if(req.body.muokkaa.length >0) {
-        //console.log("Edit-tallennus.");
+        console.log("Edit-tallennus. "+req.toString());
         db.editMessage(req.body, function(rvalue) {
             if(rvalue)
                 return res.status(302).redirect('/keskustelu_aiheesta/?id='+req.body.muokkaa);

@@ -1,7 +1,6 @@
 const request = require('supertest');
+var session = require('supertest-session');
 const app = require('../app');
-
-jest.setTimeout(10000); 
 
 /*
 // Sign in test
@@ -56,10 +55,11 @@ describe("Testing new user sign in", ()=>{
     });
 });
 */
-describe("Testing log i/o", () => { 
+
+describe("Testing log in", () => { 
     // Kirjaudutaan palveluun
     const usr = 'brlebbo';
-          
+    
     // Callback, joka odottaa logIn-testin toteutumista.
     function testLogIn(callback) {
         // set time for how long to wait for the command
@@ -70,7 +70,7 @@ describe("Testing log i/o", () => {
                 passwd:'bebbo'}).then(res => callback(res));
         // callback palauttaa tuloksen sinne, mistä funktiota kutsuttiin
 
-        }, 4000);
+        }, 5000);
     };
     
     it('Pitäisi kirjautua palveluun nimellä brlebbo', done => {
@@ -81,40 +81,53 @@ describe("Testing log i/o", () => {
         } catch (error) {
             done(error);
         }
-        
     });
     
-    /*
+});
+
+describe("Testing log out", () => { 
     // Kirjaudutaan ulos
-    // Remember to uncomment also function testLogOut
-    // This doesn't work currently, because I don't know how to fake a user that has signed in
+    const usr = 'brlebbo';
     
-      
-    // Callback, joka odottaa register-testin toteutumista.
-    function testLogOut(callback) {
-        // set time for how long to wait for the command
-      setTimeout(() => {
-          // this is the actual test
-        const tulos = request(app).get('/kayttajat/kirjautuminen').then(res=> {
-            console.log(res);
-            callback(res)
-        });
-        // callback palauttaa tuloksen sinne, mistä funktiota kutsuttiin
-        //callback(tulos);
-      }, 4000);
-    };    
+    var authenticatedSession;
+    var testSession = null;
+    
+    //Ennen uloskirjautumista kirjaudutaan sisälle, muuten ei onnist
+    beforeEach(function(done) {
+        testSession = session(app);
+        testSession.post('/kayttajat/kirjautuminen')
+            .send({ userid: usr, passwd: 'bebbo' })
+            .expect(302)
+            .end(function (err) {
+                if (err) return done(err);
+                authenticatedSession = testSession;
+                return done();
+            });
+    });
+    // Yritetään nollata muuttujia, jotta muistinhallinta voi siivota
+    afterEach(function(done){
+        authenticatedSession = null;
+        testSession = null;
+        return done();
+    })
+   
     
     it('Pitäisi kirjautua ulos (fake)', done => {
-        try {
-        testLogOut(tulos => {
-            expect(tulos.status).toBe(302); // get(/kayttajat/kirjautuminen) => 302: redirect on log out; 200: OK on log in
-            done();
+        var testSession = null;
+        testSession = session(app);
+        //console.log(testSession);
+        testSession.post('/kayttajat/kirjautuminen').send({
+                userid:usr,
+                passwd:'bebbo'})
+            .expect(302).end(function(err){
+                if (err) return done(err);
+                authenticatedSession = testSession;
         });
-        } catch (error) {
-            done(error);
-        }
+        authenticatedSession.get('/kayttajat/kirjautuminen')
+        .expect(302)
+        .end(function(err){
+            if (err) return done(err);
+            return done();
+        }); // get(/kayttajat/kirjautuminen) => 302: redirect on log out; 200: OK on log in
     });
-    */
-    
-    
 });
