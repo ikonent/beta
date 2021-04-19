@@ -111,8 +111,22 @@ describe("Testing log out", () => {
         return done();
     })
    
+    function testLogOut(callback){
+        setTimeout(() => {
+            // this is the actual test
+            authenticatedSession.get('/kayttajat/kirjautuminen')
+                .expect(302)
+                .then(tulos => {
+                    callback(tulos);
+                });
+            }
+        // callback palauttaa tuloksen sinne, mistä funktiota kutsuttiin
+        , 500);
+    }
     
     it('Pitäisi kirjautua ulos (fake)', done => {
+        try {
+        /*
         var testSession = null;
         testSession = session(app);
         //console.log(testSession);
@@ -122,12 +136,17 @@ describe("Testing log out", () => {
             .expect(302).end(function(err){
                 if (err) return done(err);
                 authenticatedSession = testSession;
-        });
-        authenticatedSession.get('/kayttajat/kirjautuminen')
-        .expect(302)
-        .end(function(err){
-            if (err) return done(err);
+        });*/
+        testLogOut(tulos => {
+            expect(tulos.status).toBe(302);
+            // get(/kayttajat/kirjautuminen) 
+            // => 302: redirect on log out;
+            // => 200: OK on log in
             return done();
-        }); // get(/kayttajat/kirjautuminen) => 302: redirect on log out; 200: OK on log in
+        });
+        } catch (error) {
+            done(error);
+        }
+        
     });
 });

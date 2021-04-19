@@ -13,7 +13,7 @@ describe("Testing msg functionalities", () => {
      var authenticatedSession;
     
     // Ennen viestien muokkaamista on kirjauduttava sisälle, jotta viestejä voi lähetellä ym.
-    beforeEach(function (done) {
+    beforeAll(function (done) {
         var testSession = null;
         testSession = session(app);
         testSession.post('/kayttajat/kirjautuminen')
@@ -26,11 +26,13 @@ describe("Testing msg functionalities", () => {
             });
     });
     // Yritetään nollata muuttujia, jotta muistinhallinta voi siivota
-    afterEach(function(done){
+    // Tiedä sitten onko tällä merkitystä
+    
+    afterAll(function(done){
         authenticatedSession = null;
         testSession = null;
         return done();
-    })
+    });
     
     // Callback: Uuden viestin lähettäminen    
     function testNewMsg(callback) {
@@ -42,9 +44,9 @@ describe("Testing msg functionalities", () => {
             sender:usr,
             topic:msgTopic            
         };
-        const tulos = authenticatedSession.post('./uusi_viesti').send(viesti).then(res => callback(res));
+        authenticatedSession.post('./uusi_viesti').send(viesti).then(res => callback(res));
         // callback palauttaa tuloksen sinne, mistä funktiota kutsuttiin
-        }, 5000);
+        }, 500);
     }
     
     
@@ -53,67 +55,67 @@ describe("Testing msg functionalities", () => {
         // set time for how long to wait for the command
         setTimeout(() => {
         // this is the actual test
-        const viesti = {
-            sender:usr,
-            topic:msgTopic,
-            message: "Kello onkin jo muuta: "+pvm.getHours()+":"+pvm.getMinutes(),
-            muokkaa:viestiId
-        };
-        const tulos = authenticatedSession.post('./uusi_viesti/?muokkaa='+viestiId).send(viesti).then(res => callback(res));
+            const viesti = {
+                sender:usr,
+                topic:msgTopic,
+                message: "Kello onkin jo muuta: "+pvm.getHours()+":"+pvm.getMinutes(),
+                muokkaa:viestiId
+            };
+            authenticatedSession.post('./uusi_viesti/?muokkaa='+viestiId).send(viesti).then(res => callback(res));
         // callback palauttaa tuloksen sinne, mistä funktiota kutsuttiin
-        }, 5000);
+        }, 500);
     }
     
     // Callback: viestin muokkaaminen
     function testDelMsg(viestiId, callback) {
         // set time for how long to wait for the command
         setTimeout(() => {
-        // this is the actual test
-        const tulos = authenticatedSession.get('./keskustelu_aiheesta/?delid='+viestiId)
-        .then(res => callback(res));
-        // callback palauttaa tuloksen sinne, mistä funktiota kutsuttiin
-        }, 5000);
+            // this is the actual test
+            authenticatedSession.get('./keskustelu_aiheesta/?delid='+viestiId)
+            .then(res => callback(res));
+            // callback palauttaa tuloksen sinne, mistä funktiota kutsuttiin
+        }, 500);
     }
     
    it('Pitäisi lähettää uusi viesti', done => {
-        //try {
+        try {
             
             testNewMsg(tulos => {expect(tulos.status).toBe(302)});
             done();
             
-        //} catch(error) {
-        //    done(error);
-        //}
+        } catch(error) {
+            done(error);
+        }
 	});
     // Muuttuja viimeisimmän viestin id:lle (olevinaan)
     
        
 
-        it('Pitäisi muokata viestiä', done => {
-            //try {
-                // Etsitään käyttäjän uusin viesti, jotta sitä on mahdollista muokata
-                db.findUserMsgs(usr,false, function(msgs) {
-                    testEditMsg(msgs[0].id, tulos => {expect(tulos.status).toBe(302)});
-                    done();
-                });
-                
-                
-            //} catch(error) {
-            //    done(error);
-            //}
-        });
+    it('Pitäisi muokata viestiä', done => {
+        try {
+            // Etsitään käyttäjän uusin viesti, jotta sitä on mahdollista muokata
+            db.findUserMsgs(usr,false, function(msgs) {
+                testEditMsg(msgs[0].id, tulos => {expect(tulos.status).toBe(302)});
+                done();
+            });
 
-        it('Pitäisi poistaa viesti', done => {
-            //try {
-                // Poistetaan uusin viesti
-                db.findUserMsgs(usr,false, function(msgs) {
-                    testDelMsg(msgs[0].id, tulos => {expect(tulos.status).toBe(302)});
-                    done();
-                });
-            //} catch(error) {
-            //    done(error);
-            //}
-        });
+
+        } catch(error) {
+            done(error);
+        }
+    });
+
+    it('Pitäisi poistaa viesti', done => {
+        try {
+            // Poistetaan uusin viesti
+            db.findUserMsgs(usr,false, function(msgs) {
+                testDelMsg(msgs[0].id, tulos => {expect(tulos.status).toBe(302)});
+                done();
+            });
+        } catch(error) {
+            done(error);
+        }
+    });
     
-   const muuttuja = request(app).get('/kayttajat/kirjautuminen');
+   //const muuttuja = request(app).get('/kayttajat/kirjautuminen');
 });
