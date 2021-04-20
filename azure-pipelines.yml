@@ -12,10 +12,10 @@ variables:
   azureSubscription: 'ee7f945c-58bf-4a2e-b24c-7e6229dab8ea'
 
   # Web app name
-  webAppName: 'ohtu-beta'
+  webAppName: 'smartict-beta'
 
   # Environment name
-  environmentName: 'ohtu-beta'
+  environmentName: 'smartict-beta'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -68,7 +68,7 @@ stages:
         deploy:
           steps:
           - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy: ohtu-beta'
+            displayName: 'Azure Web App Deploy: smartict-beta'
             inputs:
               azureSubscription: $(azureSubscription)
               appType: webAppLinux
