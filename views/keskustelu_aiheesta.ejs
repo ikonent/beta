@@ -82,7 +82,7 @@
                         // if message is droppedn on delete-area
                         let muuId = etsiMuuId(iidee); // get id of another message to return to the same conversation
                         if (muuId == undefined) { // if there is none, set only delid
-                            window.location.href = '?./delid='+iidee;               
+                            window.location.href = './?delid='+iidee;               
                         } else {
                             // if another message is found, set also that
                             window.location.href = './?id='+muuId+'&delid='+iidee;                

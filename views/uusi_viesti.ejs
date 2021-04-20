@@ -7,6 +7,11 @@
         <% include header %>
         <% include hallinta %>
     
+        <script>
+            function cancel(){
+                
+            }
+        </script>
     <main class="flex justify-content-center flex-column">
         <div class="serif row"><a href="/">aiheet</a> > Aloita uusi keskustelu
         </div>
@@ -20,7 +25,7 @@
             <label class="serif" for="message">Viesti</label><br>
             <textarea name="message" placeholder="Viesti" rows="3" cols="50" ><%= msg %> %></textarea><br>
 
-            <button type="submit" class="serif btn btn-dark m-2" onclick="window.location='http:/';return false;" Value="Peru">Peru</button>
+            <button type="button" class="serif btn btn-dark m-2" onclick="<%- (msgId!='')?"window.location='/keskustelu_aiheesta/?id="+msgId+"'":"window.location='/'" %>;return false;" Value="Peru" formnovalidate>Peru</button>
             <button type="submit" class="serif btn btn-dark m-2" id="submit" value="Lähetä">Lähetä</button>    
         </form>
     </main>
