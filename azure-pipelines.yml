@@ -9,7 +9,7 @@ trigger:
 variables:
 
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '2341874d-2686-419c-bca4-c550f815f004'
+  azureSubscription: 'ee7f945c-58bf-4a2e-b24c-7e6229dab8ea'
 
   # Web app name
   webAppName: 'ohtu-beta'
