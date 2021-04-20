@@ -77,17 +77,17 @@
                     if(this.id =='jatkoon') {
                         // if message is dropped on edit-area
                         let url = '/uusi_viesti/?muokkaa='+iidee;
-                        window.location.href = url;
+                        window.location = url;
                     } else { //ts. poistoon
                         // if message is droppedn on delete-area
                         let muuId = etsiMuuId(iidee); // get id of another message to return to the same conversation
                         if (muuId == undefined) { // if there is none, set only delid
                             let url = '/?delid='+iidee;
-                            window.location.href = url;               
+                            window.location = url;               
                         } else {
                             // if another message is found, set also that
                             let url = '/?id='+muuId+'&delid='+iidee;
-                            window.location.href = url;                
+                            window.location = url;                
                         };
                     };
                 };
