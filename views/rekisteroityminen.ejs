@@ -7,29 +7,50 @@
         <% include header %>
         <% include hallinta %>
     
-    <main class="flex justify-content-center flex-column">
-        
-         <script>
-                function varmista(){
-                    if(confirm("Ole siivosti!")) {
-                        if (!document.getElementById("ohjeetluettu").checked) {
-                            document.getElementById("ohjeetluettu").checked=true;
-                        }
+    <main class="flex justify-content-center flex-column">	
+        <script>
+            function varmista(){
+                if(confirm("Ole siivosti!")) {
+                    if (!document.getElementById("ohjeetluettu").checked) {
+                        document.getElementById("ohjeetluettu").checked=true;
                     }
                 }
-            </script>
-        
+            }
+			function checkPassword(form) {
+                password1 = form.passwd.value;
+                password2 = form.pwd2.value;
+  
+                // Jos salasana ei syötetty
+                if (password1 == '')
+                    alert ("Anna salasana.");
+                      
+                // Jos sama salasana ei syötetty
+                else if (password2 == '')
+                    alert ("Anna salasana uudelleen.");
+                      
+                // Jos salasanat ei täsmää...   
+                else if (password1 != password2) {
+                    alert ("\nSalasana ei täsmää, yritä uudelleen...")
+                    return false;
+                }
+ 
+                // Jos sama palauta True
+                else{
+                    return true;
+                }
+            }
+        </script>
         <nav class="serif row"><a href="/">Aiheet</a>&nbsp;> Luo uusi tunnus
         </nav>
         <h2  class="serif">Luo uusi käyttäjätunnus</h2>
-        <form method='POST' action='/kayttajat/rekisteroityminen'>
+        <form method='POST' onSubmit="return checkPassword(this)">
             <div>
                 <label for="userid" class="serif">Käyttäjätunnus</label><br>
                 <input type="text" placeholder="Tunnus" name="userid" required="true" value=""><br>
                 <label for="passwd"  class="serif">Salasana</label><br>
-                <input type="password" placeholder="Salasana" name="passwd" required='true' value=""><br>
+                <input id="password" type="password" placeholder="Salasana" name="passwd" required='true' value=""><br>
                 <label for="pwd2" class="serif">Anna salasana uudelleen</label><br>
-                <input id="pwd2" requied="true" type="password" name="pwd2" placeholder="" value=""><br>
+                <input id="pwd2" required="true" type="password" name="pwd2" placeholder="Sama salasana" value=""><span id='message'></span><br>
                 <input id="ohjeetluettu" name="ohjeetluettu" required="true" type="checkbox">
                 <label for="ohjeetluettu" on  class="serif">Olen lukenut <a onclick="varmista()" href=""  class="serif" >foorumin ohjeet</a></label><br>
             </div>
