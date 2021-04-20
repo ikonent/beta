@@ -9,7 +9,7 @@ trigger:
 variables:
 
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'ee7f945c-58bf-4a2e-b24c-7e6229dab8ea'
+  azureSubscription: '72c2f883-4f07-4c4a-a183-9802ad1b0fd0'
 
   # Web app name
   webAppName: 'smartict-beta'
