@@ -6,86 +6,103 @@
         <script>
             document.addEventListener('DOMContentLoaded', (event) => {
                 const omat = document.querySelectorAll('.oma');
+                // Add eventListeners to all messages that belong to user
                 omat.forEach(item => {
                     item.addEventListener('dragstart', dragStart, false);
                     item.addEventListener('dragend', dragEnd, false);
                 });
 
+                // Start drag
                 function dragStart(e){
+                    // Change opacity
                     this.style.opacity='0.4';
+                    // Define content
                     e.dataTransfer.setData('text/plain', e.target.id);                    
-
+                    // Change possible target attributes to make dropzones more visible
                     targetit.forEach(item =>{
                         item.style.zIndex='50';
                         item.classList.add('hilit_dz');
                         e.target.style.opacity='.4';
                         
                     });
-                }
+                };
 
-                function dragEnd(e){
+                // End drag
+                function dragEnd(e) {
+                    // Return opacity of dragged object
                     this.style.opacity='1';
+                    // Return attributes of target areas
                     targetit.forEach(item =>{
                         item.classList.remove('hilit_dz');
                         item.style.zIndex='-5';
                         e.target.style.opacity='1';
                     });
-                }
-
+                };
+                // Define what target zones are
                 const targetit = document.querySelectorAll('.dropzone');
+                // Define properties for target zones
                 targetit.forEach(item => {
                     item.addEventListener('dragenter', dragEnter);
                     item.addEventListener('dragover', dragOver);
                     item.addEventListener('dragleave', dragLeave);
                     item.addEventListener('drop', drop);
                 });
-
+                
+                // Aother definition for when dragging is started
                 function dragEnter(e){
 
                     e.preventDefault();
                     e.target.classList.add('hilit_dz');
                     e.target.style.opacity='0.8';
 
-                }
+                };
+                // Change drag over effect
                 function dragOver(e){
                     e.preventDefault();
 
-                }
+                };
+                // Change drop zone opacity when object is no longer hovering over it
                 function dragLeave(e){
                     //e.target.classList.remove('hilit_dz');
                     e.target.style.opacity='.4';
-                }
+                };
+                
+                // What happens on drop
                 function drop(e){
-
+                    // Define the id of the dropped html-object
                     const noutoId = e.dataTransfer.getData('text/plain');
+                    // get the ID of the message that was being handled
                     const iidee = document.getElementById(noutoId).getElementsByTagName('span')[0].innerHTML;
                     //const topikki = document.getElementById(noutoId).getElementsByTagName('span')[1].innerHTML;
 
-                    if(this.id =='jatkoon'){
+                    if(this.id =='jatkoon') {
+                        // if message is dropped on edit-area
                         window.location.href='/uusi_viesti/?muokkaa='+iidee;
                     } else { //ts. poistoon
-                        let muuId = etsiMuuId(iidee);
-                        if (muuId == undefined) {
+                        // if message is droppedn on delete-area
+                        let muuId = etsiMuuId(iidee); // get id of another message to return to the same conversation
+                        if (muuId == undefined) { // if there is none, set only delid
                             window.location.href = '?./delid='+iidee;               
                         } else {
+                            // if another message is found, set also that
                             window.location.href = './?id='+muuId+'&delid='+iidee;                
-                        }
-                    }
-                }
+                        };
+                    };
+                };
             });
 
-
+            // Check if this message is the only one under this topic. If not, get id of some other message to be able to return to this conversation
             function etsiMuuId(verrokki) {
                 const idt = document.querySelectorAll('.tunnus');
                 let ret;// = undefined;
-                for (i of idt){
+                for (i of idt) {
                     if (i.innerHTML != verrokki) {
                         ret = i.innerHTML;
                         break;
-                    }
-                }
+                    };
+                };
                 return ret;
-            }
+            };
 
         </script>
     </head>
@@ -127,9 +144,8 @@
                     } else {
                         document.getElementById(para).classList.add("tiivis");
                         document.getElementById(nappi).innerHTML ="Laajenna";
-                    }
-
-                }
+                    };
+                };
             </script>
         </main>
         <% include footer %>
