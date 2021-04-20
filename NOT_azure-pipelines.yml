@@ -9,13 +9,13 @@ trigger:
 variables:
 
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'ee7f945c-58bf-4a2e-b24c-7e6229dab8ea'
+  azureSubscription: '72c2f883-4f07-4c4a-a183-9802ad1b0fd0'
 
   # Web app name
-  webAppName: 'ohtu-beta'
+  webAppName: 'smartict-beta'
 
   # Environment name
-  environmentName: 'ohtu-beta'
+  environmentName: 'smartict-beta'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -68,7 +68,7 @@ stages:
         deploy:
           steps:
           - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy: ohtu-beta'
+            displayName: 'Azure Web App Deploy: smartict-beta'
             inputs:
               azureSubscription: $(azureSubscription)
               appType: webAppLinux
