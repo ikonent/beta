@@ -76,15 +76,18 @@
 
                     if(this.id =='jatkoon') {
                         // if message is dropped on edit-area
-                        window.location.href='/uusi_viesti/?muokkaa='+iidee;
+                        let url = '/uusi_viesti/?muokkaa='+iidee;
+                        window.location.href = url;
                     } else { //ts. poistoon
                         // if message is droppedn on delete-area
                         let muuId = etsiMuuId(iidee); // get id of another message to return to the same conversation
                         if (muuId == undefined) { // if there is none, set only delid
-                            window.location.href = './?delid='+iidee;               
+                            let url = '/?delid='+iidee;
+                            window.location.href = url;               
                         } else {
                             // if another message is found, set also that
-                            window.location.href = './?id='+muuId+'&delid='+iidee;                
+                            let url = '/?id='+muuId+'&delid='+iidee;
+                            window.location.href = url;                
                         };
                     };
                 };
