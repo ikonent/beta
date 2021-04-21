@@ -41,11 +41,11 @@ router.get('/', function(req, res, next) {
             url:'?',
             onLogPage:false,
             onSignPage:false,
-            p_uusin:true,
-            p_tiivis:false,
-            h_uusin:req.session.h_uusin,
-            h_tiivis:req.session.h_tiivis,
-            p_tietoa:true
+            p_uusin:true,                       // Is newest message on top button visible
+            p_tiivis:false,                     // Is condense messages button visible
+            h_uusin:req.session.h_uusin,        // value of newest on top button
+            h_tiivis:req.session.h_tiivis,      // value of condense messages button
+            p_tietoa:true   
         }); 
     });
 });
