@@ -45,7 +45,7 @@ describe("Testing msg functionalities", () => {
         }, 500);
     }
     
-    // Callback: viestin muokkaaminen
+    // Callback: viestin poistaminen
     function testDelMsg(viestiId, callback) {
         // set time for how long to wait for the command
         setTimeout(() => {
