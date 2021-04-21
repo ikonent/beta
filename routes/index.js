@@ -127,6 +127,47 @@ router.get('/keskustelu_aiheesta', function(req, res) {
     }
 });
 
+/* GET about page. */
+router.get('/omat_viestit', function(req, res) {
+    if(req.session.userid === undefined || req.session.userid == "") {
+        req.session.userid = null;
+    }
+
+    if(req.query.h_uusin!= undefined){
+        //console.log(req.query.h_uusin);
+        req.session.h_uusin = (req.query.h_uusin=='true');
+
+    } else if (req.session.h_uusin === undefined) {
+        req.session.h_uusin = true;
+    }
+
+    if(req.query.h_tiivis != undefined){
+        req.session.h_tiivis = (req.query.h_tiivis == 'true');
+
+    } else if (req.session.h_tiivis === undefined) {
+        req.session.h_tiivis = false;
+    }
+
+    if(req.session.userid!= undefined){
+        db.findUserMsgs(req.session.userid,req.session.h_uusin,function(msg) {
+            return res.status(200).render('omat_viestit', { title: 'omat_viestit',
+                                                      login: req.session.userid,
+                                                      messages:msg,
+                                                      onLogPage:false,
+                                                      onSignPage:false,
+                                                      topikki:req.query.id,
+                                                      url:'/omat_viestit',
+                                                      p_uusin:true,
+                                                      p_tiivis:true,
+                                                      h_uusin:req.session.h_uusin,
+                                                      h_tiivis:req.session.h_tiivis,
+                                                      p_tietoa:true });
+        });
+    } else {
+        return res.status(302).redirect('/');
+    }
+});
+
 router.get('/uusi_viesti', function(req, res, next) {
     // Jos käyttäjä ei ole kirjautunut, ei voi kirjoittaa viestiä
     if(req.session.userid === undefined || req.session.userid == "") {

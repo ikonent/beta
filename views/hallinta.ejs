@@ -125,7 +125,11 @@
         </svg>
 
         <span><%= (topikki=="")?"Aloita uusi keskustelu":"Jatka keskustelua" %></span><%-(login!=null)?'</a>':'</span>'%>
-
+        
+        <!-- Omat viestit -painike -->
+        <%-(login!=null)?'<a id="p_omat" href="/omat_viestit">':'<span>'%>
+        <span>Omat viestit</span><%-(login!=null)?'</a>':'</span>'%>
+        
         <!-- Uusin vai vanhin ensin painike -->
         <%-(p_uusin)?'<a id="p_uusin" href="'+url+'h_uusin='+(!h_uusin)+'"':'<span>'%>
         <?xml version="1.0" encoding="UTF-8"?>
