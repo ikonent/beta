@@ -127,7 +127,7 @@ router.get('/keskustelu_aiheesta', function(req, res) {
     }
 });
 
-/* GET about page. */
+/* GET own messages page. */
 router.get('/omat_viestit', function(req, res) {
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
@@ -148,14 +148,43 @@ router.get('/omat_viestit', function(req, res) {
         req.session.h_tiivis = false;
     }
 
-    if(req.session.userid!= undefined){
+    if(req.query.delid != undefined){
+        //console.log("poistetaan id: "+req.query.delid);
+        db.deleteMessage(req.query.delid,req.session.userid,function(rvalue) {
+            if(rvalue && req.query.v > 1){
+                //console.log("Onnistui?! paluu keskusteluun.");
+                db.findUserMsgs(req.session.userid,req.session.h_uusin,function(msg) {
+                    return res.status(200).render('omat_viestit', { title: 'omat_viestit',
+                                                              login: req.session.userid,
+                                                              messages:msg,
+                                                              onLogPage:false,
+                                                              onSignPage:false,
+                                                              topikki:'',
+                                                              url:'/omat_viestit',
+                                                              p_uusin:true,
+                                                              p_tiivis:true,
+                                                              h_uusin:req.session.h_uusin,
+                                                              h_tiivis:req.session.h_tiivis,
+                                                              p_tietoa:true });
+                });
+
+            } else if (rvalue) {
+                // It was the last message
+                //console.log("Onnistui?! paluu juureen.");
+                return res.status(302).redirect('/');
+            } else {
+                // There was an error
+                return res.status(302).redirect('/');
+            }
+        });
+    } else if(req.session.userid!= undefined){
         db.findUserMsgs(req.session.userid,req.session.h_uusin,function(msg) {
             return res.status(200).render('omat_viestit', { title: 'omat_viestit',
                                                       login: req.session.userid,
                                                       messages:msg,
                                                       onLogPage:false,
                                                       onSignPage:false,
-                                                      topikki:req.query.id,
+                                                      topikki:'',
                                                       url:'/omat_viestit',
                                                       p_uusin:true,
                                                       p_tiivis:true,

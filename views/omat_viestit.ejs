@@ -81,31 +81,12 @@
                         location = url;
                     } else { //ts. poistoon
                         // if message is droppedn on delete-area
-                        let muuId = etsiMuuId(iidee); // get id of another message to return to the same conversation
-                        if (muuId == undefined) { // if there is none, set only delid
-                            let url = '/?delid='+iidee;
-                            location = url;               
-                        } else {
-                            // if another message is found, set also that
-                            let url = '/?id='+muuId+'&delid='+iidee;
-                            location = url;                
-                        };
+                        let url = '/omat_viestit/?delid='+iidee+"&v="+<%= messages.length %>;
+                        location = url;               
+                        
                     };
                 };
             });
-
-            // Check if this message is the only one under this topic. If not, get id of some other message to be able to return to this conversation
-            function etsiMuuId(verrokki) {
-                const idt = document.querySelectorAll('.tunnus');
-                let ret;// = undefined;
-                for (i of idt) {
-                    if (i.innerHTML != verrokki) {
-                        ret = i.innerHTML;
-                        break;
-                    };
-                };
-                return ret;
-            };
 
         </script>
     </head>
