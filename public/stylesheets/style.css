@@ -260,6 +260,11 @@ footer{
         word-wrap: normal;
     }
 
+/*to align items in menu*/
+    .d-flex.justify-content-around.flex-nowrap.p-0 {
+    align-items: baseline;
+}
+
 /* Asemoinnit eri levyisille ruuduille */
 @media screen and (max-width:1050px) {
     
