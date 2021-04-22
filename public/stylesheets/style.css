@@ -18,6 +18,7 @@ body {
     font-family: 'Noto Sans', Verdana, sans-serif;
     font-size:medium;
     font-weight: 300;
+    word-wrap: break-word;
 }
 h1, h2 {
     font-weight: 700;
@@ -58,7 +59,7 @@ header>h1, footer>h1 {
     font-family: 'Noto Serif',Georgia, Garamond, serif;
 }
 #hallinta {
-    position: fixed;
+    position: relative; /*fixed was before*/
     top:50px;
     font-weight: 400;
     font-family: 'Noto Serif',Georgia, Garamond, serif;
@@ -90,6 +91,17 @@ section, article {
 #hallinta span #kuvio, #hallinta>div>span {
     fill:#8d95a6; 
     color:#8d95a6;
+}
+
+/*added new kuvio*/
+#kuvio3 {
+    fill:#f2f2f2;
+    color:#f2f2f2;
+}
+
+/*added hover to the kuvio#3*/
+#hallinta a:hover #kuvio3 {
+    fill: #0d0d0d; /* 2. tummin */
 }
 
 #hallinta a {
@@ -198,7 +210,7 @@ b {
 
 .oma {
     
-    opacity:50%;
+    opacity:90%; /*changed opacity as Mika asked in his bug*/
     background-color:#f2f2f2; /* #8d95a6;*/
     background-blend-mode: soft-light;
     cursor: move;
@@ -279,4 +291,11 @@ footer{
         display: block;
         visibility: visible;
     }
+    /*changed paddings so they fit better*/
+    #hallinta a {
+        padding: 2px 2px;
+    }
+
+
+
 }
