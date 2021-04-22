@@ -68,9 +68,9 @@ header>h1, footer>h1 {
     background-color: #0d0d0d;
     color: #f2f2f2; // Vaalein
     width: 100%;
-    display: flex;
-    flex: 0 0 100%;
-    flex-basis: 60%;
+    /*display: flex;*/ /*commented out*/
+    flex: 0 0 100%; /* this both are useless since there no flex elemnts there*/
+    flex-basis: 60%;/* this both are useless since there no flex elemnts there*/
 }
 .symboli{
     display: inline-block;
