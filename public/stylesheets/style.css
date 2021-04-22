@@ -285,7 +285,10 @@ footer{
     #hallinta a {
         padding: 2px 2px;
     }
-
+/*added to prevent word-wrap on page oma_viestiti*/
+    span.tunnus.col-sm-1{
+        word-wrap: normal;
+    }
 
 
 }
