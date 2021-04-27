@@ -80,7 +80,7 @@ router.post('/kirjautuminen', (req, res) => {
                     p_tietoa:true
             });	
         } else if (data == "not exist") {
-            return res.status(404).render('register', {
+            return res.status(404).render('alert', {
                 title: 'Tietojasi ei löytynyt. Rekisteröidy ennen käyttöä!',
                     returl: "/kayttajat/kirjautuminen",
                     virhe:data,
