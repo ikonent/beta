@@ -65,24 +65,71 @@ router.post('/kirjautuminen', (req, res) => {
     db.verifyUserId(req, function (data) {
         if (data == "Access denied") {
             return res.status(500).render('alert', {
-                title: 'Tietokantaan ei saa nyt yhteyttä. Yritä myöhemmin uudestaan.'
+                title: 'Tietokantaan ei saa nyt yhteyttä. Yritä myöhemmin uudestaan.',
+                    returl: "/kayttajat/kirjautuminen",
+                    virhe:data,
+                    login: req.session.userid,
+                    onLogPage:false,
+                    onSignPage:true,
+                    topikki:'',
+                    url:'/alert/?',
+                    p_uusin:false,
+                    p_tiivis:false,
+                    h_uusin:req.session.h_uusin,
+                    h_tiivis:req.session.h_tiivis,
+                    p_tietoa:true
             });	
         } else if (data == "not exist") {
             return res.status(404).render('register', {
-                title: 'Tietojasi ei löytynyt. Rekisteröidy ennen käyttöä!'
+                title: 'Tietojasi ei löytynyt. Rekisteröidy ennen käyttöä!',
+                    returl: "/kayttajat/kirjautuminen",
+                    virhe:data,
+                    login: req.session.userid,
+                    onLogPage:false,
+                    onSignPage:true,
+                    topikki:'',
+                    url:'/alert/?',
+                    p_uusin:false,
+                    p_tiivis:false,
+                    h_uusin:req.session.h_uusin,
+                    h_tiivis:req.session.h_tiivis,
+                    p_tietoa:true
             });
         } else if (data == "not valid") {
             return res.status(406).render('alert', {
-                title: 'Salasana ei täsmää!'
+                title: 'Salasana ei täsmää!',
+                    returl: "/kayttajat/kirjautuminen",
+                    virhe:data,
+                    login: req.session.userid,
+                    onLogPage:false,
+                    onSignPage:true,
+                    topikki:'',
+                    url:'/alert/?',
+                    p_uusin:false,
+                    p_tiivis:false,
+                    h_uusin:req.session.h_uusin,
+                    h_tiivis:req.session.h_tiivis,
+                    p_tietoa:true
             });	
         } else if (data == "exist") {
             req.session.userid = req.body.userid;
             return res.status(302).redirect('/');
         } else {
-            return res.status(400).render('error', {
-                message: 'Virhetoiminto: Ota yhteyttä järjestelmän ylläpitäjään',
-                error: data
-            });
+            return res.status(400).render('alert', {
+                    title:"Jotain meni pieleen",
+                    returl: "/kayttajat/kirjautuminen",
+                    virhe:data,
+                    login: req.session.userid,
+                    onLogPage:false,
+                    onSignPage:true,
+                    topikki:'',
+                    url:'/alert/?',
+                    p_uusin:false,
+                    p_tiivis:false,
+                    h_uusin:req.session.h_uusin,
+                    h_tiivis:req.session.h_tiivis,
+                    p_tietoa:true
+                });
         };
     });
 });
@@ -92,12 +139,34 @@ router.post('/rekisteroityminen', (req, res) => {
             switch(data) {
                 case "Access denied":
                     return res.status(500).render('alert', {
-                        title: 'Tietokantaan ei saa nyt yhteyttä. Yritä myöhemmin uudestaan.'
+                        title: 'Tietokantaan ei saa nyt yhteyttä. Yritä myöhemmin uudestaan.',
+                        returl: "/kayttajat/rekisteroityminen",
+                        login: req.session.userid,
+                        onLogPage:false,
+                        onSignPage:true,
+                        topikki:'',
+                        url:'/alert/?',
+                        p_uusin:false,
+                        p_tiivis:false,
+                        h_uusin:req.session.h_uusin,
+                        h_tiivis:req.session.h_tiivis,
+                        p_tietoa:true
                     });	
                     break;
                 case "Username already exists":
                     return res.status(409).render('alert', {
-                        title: 'Samanniminen käyttäjä on jo olemassa.'
+                        title: 'Samanniminen käyttäjä on jo olemassa.',
+                        returl: "/kayttajat/rekisteroityminen",
+                        login: req.session.userid,
+                        onLogPage:false,
+                        onSignPage:true,
+                        topikki:'',
+                        url:'/alert/?',
+                        p_uusin:false,
+                        p_tiivis:false,
+                        h_uusin:req.session.h_uusin,
+                        h_tiivis:req.session.h_tiivis,
+                        p_tietoa:true
                     });	
                     break;
                 default:

@@ -104,6 +104,20 @@ router.get('/keskustelu_aiheesta', function(req, res) {
                 //console.log("Onnistui?! paluu juureen.");
                 return res.status(302).redirect('/');
             } else {
+                return res.render('alert', {
+                    title:"Jotain meni pieleen",
+                    returl:'/keskustelu_aiheesta',
+                                 login: req.session.userid,                            
+                                 onLogPage:false,
+                                 onSignPage:false,
+                                 url:'/tietoa/?',
+                                 topikki:'',
+                                 p_uusin:false,
+                                 p_tiivis:false,
+                                 h_uusin:req.session.h_uusin,
+                                 h_tiivis:req.session.h_tiivis,
+                                 p_tietoa:true
+                });
                 //console.log("Pieleen meni");
             }
         });
@@ -160,7 +174,7 @@ router.get('/omat_viestit', function(req, res) {
                                                               onLogPage:false,
                                                               onSignPage:false,
                                                               topikki:'',
-                                                              url:'/omat_viestit',
+                                                              url:'/omat_viestit/?',
                                                               p_uusin:true,
                                                               p_tiivis:true,
                                                               h_uusin:req.session.h_uusin,
@@ -174,7 +188,20 @@ router.get('/omat_viestit', function(req, res) {
                 return res.status(302).redirect('/');
             } else {
                 // There was an error
-                return res.status(302).redirect('/');
+                return res.status(302).render('alert', {
+                    title:"Jotain meni pieleen",
+                    returl:'/omat_viestit',
+                                 login: req.session.userid,                            
+                                 onLogPage:false,
+                                 onSignPage:false,
+                                 url:'/tietoa/?',
+                                 topikki:'',
+                                 p_uusin:false,
+                                 p_tiivis:false,
+                                 h_uusin:req.session.h_uusin,
+                                 h_tiivis:req.session.h_tiivis,
+                                 p_tietoa:true
+                });
             }
         });
     } else if(req.session.userid!= undefined){
@@ -185,7 +212,7 @@ router.get('/omat_viestit', function(req, res) {
                                                       onLogPage:false,
                                                       onSignPage:false,
                                                       topikki:'',
-                                                      url:'/omat_viestit',
+                                                      url:'/omat_viestit/?',
                                                       p_uusin:true,
                                                       p_tiivis:true,
                                                       h_uusin:req.session.h_uusin,
@@ -262,13 +289,25 @@ router.get('/uusi_viesti', function(req, res, next) {
 router.post('/uusi_viesti', function(req, res, next) {
     //console.log(req.body);
     if(req.body.muokkaa.length >0) {
-        console.log("Edit-tallennus. "+req.toString());
+        //console.log("Edit-tallennus. "+req.toString());
         db.editMessage(req.body, function(rvalue) {
             if(rvalue)
                 return res.status(302).redirect('/keskustelu_aiheesta/?id='+req.body.muokkaa);
             else
-                return res.status(400).send("Jotain meni pieleen.");
-                //console.log("Pieleen meni");
+                return res.status(400).render('alert', {
+                    title:"Jotain meni pieleen",
+                    returl:'/uusi_viesti',
+                                 login: req.session.userid,                            
+                                 onLogPage:false,
+                                 onSignPage:false,
+                                 url:'/tietoa/?',
+                                 topikki:'',
+                                 p_uusin:false,
+                                 p_tiivis:false,
+                                 h_uusin:req.session.h_uusin,
+                                 h_tiivis:req.session.h_tiivis,
+                                 p_tietoa:true
+                });
         });
     } else {
         //console.log("Uuden viestin tallennus.");
@@ -278,7 +317,10 @@ router.post('/uusi_viesti', function(req, res, next) {
             else if (rvalue)
                 return res.status(302).redirect('/keskustelu_aiheesta/?id='+req.body.topikki);
             else {
-                return res.status(400).send("Jotain meni pieleen.");
+                return res.status(400).render('alert', {
+                    title:"Jotain meni pieleen",
+                    returl:'/uusi_viesti'
+                });
             }
         });
     }
