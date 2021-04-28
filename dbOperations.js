@@ -21,7 +21,7 @@ module.exports = {
         con.connect(err => {
             if (err) return callback(null);
 
-            con.query("SELECT a.* FROM messages a WHERE a.topic LIKE (SELECT b.topic FROM messages b WHERE "+id2Topic+"=b.id ) ORDER BY a.id "+suunta, (err, data) => {
+            con.query("SELECT a.* FROM messages a WHERE a.topic LIKE (SELECT b.topic FROM messages b WHERE "+ connection.escape(id2Topic)+"=b.id ) ORDER BY a.id "+suunta, (err, data) => {
                 if(err) return callback(null);
                 con.close();
                 return callback(data);
@@ -43,7 +43,7 @@ module.exports = {
         con.connect(err => {
             if (err) return callback(null);
 
-            con.query("SELECT * FROM messages WHERE sender='"+userid+"' ORDER BY id "+suunta, (err, data) => {
+            con.query("SELECT * FROM messages WHERE sender='"+connection.escape(userid)+"' ORDER BY id "+suunta, (err, data) => {
                 if(err) return callback(null);
                 con.close();
                 return callback(data);
@@ -132,7 +132,7 @@ module.exports = {
         con.connect(err => {
             if (err) return callback(null);
             // Poimitaan otsikot, viestien määrä sekä uusimman viestin id ja lähettäjä
-            con.query("SELECT topic FROM messages WHERE id="+iidee, (err, data) => {
+            con.query("SELECT topic FROM messages WHERE id="+connection.escape(iidee), (err, data) => {
                 if(err) return callback(null);
                 con.close();
                 //console.log("etsi otsikko "+data);
@@ -151,7 +151,7 @@ module.exports = {
         con.connect(err => {
             if (err) return callback(null);
             
-            con.query("SELECT * FROM messages WHERE id="+iidee+" AND sender='"+userid+"'", (err, data) => {
+            con.query("SELECT * FROM messages WHERE id="+iidee+" AND sender='"+(userid)+"'", (err, data) => {
                 if(err) return callback(null);
                 con.close();
                 return callback(data);
@@ -197,7 +197,7 @@ module.exports = {
             if (err) {
                 return callback(false);
             } else {
-                con.query("UPDATE messages SET message='"+req.message+"' WHERE id="+req.muokkaa+" AND SENDER='"+req.sender+"'", (err, result) => {
+                con.query("UPDATE messages SET message='"+connection.escape(req.message)+"' WHERE id="+connection.escape(req.muokkaa)+" AND SENDER='"+connection.escape(req.sender)+"'", (err, result) => {
                     if (err) return callback(false);
                     con.query("COMMIT", (err, ans) => {
                                                        con.query("SELECT * FROM messages", (err, data) => {
@@ -222,7 +222,7 @@ module.exports = {
         con.connect(err => {
             if (err) return callback(null);
             // Poimitaan otsikot, viestien määrä sekä uusimman viestin id ja lähettäjä
-            con.query("DELETE FROM messages WHERE id="+delid+" AND SENDER='"+userid+"'", (err, data) => {
+            con.query("DELETE FROM messages WHERE id="+connection.escape(delid)+" AND SENDER='"+(userid)+"'", (err, data) => {
                 if(err) return callback(null);
                 con.query("COMMIT", (err, ans) => {
                                                    con.query("SELECT * FROM messages", (err, data) => {
