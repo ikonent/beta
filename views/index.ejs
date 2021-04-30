@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="<% dict.getCurrentLocale().language %>">
     <head>
         <% include head %>
     </head>
@@ -8,13 +8,13 @@
         <% include hallinta %>
 
         <main class="flex flex-column">
-            <nav class="serif row">Aiheet 
+            <nav class="serif row"><% dict.translate("common.aiheet")  %> 
             </nav>
             <section class="serif">
                 <div class="row">
-                    <span class="col-sm-8">Otsikko</span>
-                    <span  class="col-sm-1">Lkm</span>
-                    <span  class="col-sm-3">Uusin viestijä</span>
+                    <span class="col-sm-8"><% dict.translate("index.otsikko")  %></span>
+                    <span  class="col-sm-1"><% dict.translate("index.lkm")  %></span>
+                    <span  class="col-sm-3"><% dict.translate("index.uusinKirjoittaja")  %></span>
                 </div>
             </section>
             <section>
@@ -23,12 +23,7 @@
                     <b class="col-sm-8"><%= messages[i].topic %></b>
                     <span class="col-sm-1"><%= messages[i].lukum %></span>
                     <span class="col-sm-3"><%= messages[i].sender %></span>
-                    <!--
-<td>< %= messages[i].id %></td>
-<td>< %= messages[i].sender %></td>
-<td>< %= messages[i].topic %></td>
-<td>< %= messages[i].message %></td>
--->
+            
                 </a>
                 
                 <%- (i< messages.length-1)?'<hr class="otsikoidenValit">':''; %>

@@ -2,17 +2,36 @@ var express = require('express');
 var router = express.Router();
 var session = require('express-session');
 var db = require('../dbOperations');
+const Localization = require("localizationjs");
+
+//Dictionaries
+var dictionaryFI = require('../languages/fi');
+var dictionaryEN = require('../languages/en');
+// create a locale manager
+const locale = new Localization({ defaultLocale: "en" });
 
 // Globaalit muuttujat
 
+// add the dictionary for english language
+
+
+
+locale.addDict("fi", dictionaryFI);
+
+locale.addDict("en", dictionaryEN);
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('(/:lang(en|fi))?/', function(req, res, next) {
     //console.log(req);
     //console.log(res);
     //console.log(req.query);
     console.log(req.session);
+    
+    if(req.params.lang !=undefined) {
+        locale.setCurrentLocale(req.params.lang);
+    }
+    
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
     }
@@ -34,6 +53,7 @@ router.get('/', function(req, res, next) {
     //console.log("jotain tapahtu "+req.session.h_uusin);
     db.findTitles(req.session.h_uusin,function(msg) {
         return res.status(200).render('index', {
+            dict:locale,
             title: 'Kaikki viestit',
             login: req.session.userid,
             messages: msg,
@@ -53,15 +73,16 @@ router.get('/', function(req, res, next) {
 
 
 /* GET about page. */
-router.get('/tietoa', function(req, res) {
+router.get('/'+locale.translate("urls.tietoa"), function(req, res) {
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
     }
-    return res.status(200).render('tietoa', { title: 'Ruotijat - tietoa',
-                                 login: req.session.userid,                            
+    return res.status(200).render('tietoa', { title: 'Ruotijat - '+locale.translate("tietoa.title"),
+                                 login: req.session.userid,
+                                 dict:locale,                          
                                  onLogPage:false,
                                  onSignPage:false,
-                                 url:'/tietoa/?',
+                                 url:'/'+locale.translate("urls.tietoa")+'/?',
                                  topikki:'',
                                  p_uusin:false,
                                  p_tiivis:false,
@@ -70,6 +91,8 @@ router.get('/tietoa', function(req, res) {
                                  p_tietoa:true
                                 });
 });
+
+
 
 /* GET about page. */
 router.get('/keskustelu_aiheesta', function(req, res) {
