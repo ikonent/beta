@@ -5,6 +5,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/kayttajat');
 
@@ -26,8 +28,24 @@ app.use(session({
   secret: "kissanviikset"
 }));
 
+
+// This is Index router, it will handle other URL-calls
 app.use('/', indexRouter);
-app.use('/kayttajat', usersRouter);
+
+
+const kayttajat_urls = [
+    '/kayttajat',
+    '/users'
+]
+app.use(kayttajat_urls.join('|'), usersRouter);   // Here /fi is optional, hence parenthesis and a questionmark
+
+// Below is the base for a more dynamic approach
+/*
+app.use('(/:lang(en|fi))?/kayttajat', usersRouter);
+app.use('(/:lang(en|fi))?/users', usersRouter);
+*/
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

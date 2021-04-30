@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="<%- dict.getCurrentLocale().language %>">
   <head>
     <% include head %>
   </head>
@@ -8,18 +8,18 @@
         <% include hallinta %>
     
     <main class="flex justify-content-center flex-column">
-        <nav class="serif row"><a href="/">Aiheet</a>&nbsp;> Kirjaudu <%- (login==null)?"sisään":"ulos" %>
+        <nav class="serif row"><a href="/"><%=dict.translate("common.aiheet") %></a>&nbsp;> <%= (login==null)?dict.translate("log_in.otsikkoSisaan"):dict.translate("log_in.otsikkoUlos") %>
         </nav>
-        <h2  class="serif">Kirjaudu foorumille</h2>
+        <h2  class="serif"><%=dict.translate("log_in.otsikkoIso") %></h2>
         <form method='POST' action='/kayttajat/kirjautuminen'>
             <div>
-                <label for="userid" class="serif">Käyttäjätunnus</label><br>
-                <input type="text" placeholder="Tunnus" name="userid" required="true" value=""><br>
-                <label for="passwd"  class="serif">Salasana</label><br>
-                <input type="password" placeholder="Salasana" name="passwd" required='true' value="">
+                <label for="userid" class="serif"><%=dict.translate("log_in.tunnus")%></label><br>
+                <input type="text" placeholder="<%=dict.translate("log_in.tunnusPre")%>" name="userid" required="true" value=""><br>
+                <label for="passwd"  class="serif"><%=dict.translate("log_in.passu")%></label><br>
+                <input type="password" placeholder="<%=dict.translate("log_in.passuPre")%>" name="passwd" required='true' value="">
             </div>
-			<button id="submit" type="submit" class="serif btn btn-dark" name="kirjaudu" value="Kirjaudu">Kirjaudu</button>
-            <button type="button" class="serif btn btn-dark m-2" onclick="location='/';return false;" Value="Peru">Peru</button>  
+			<button id="submit" type="submit" class="serif btn btn-dark" name="kirjaudu" value="<%=dict.translate("log_in.painikeKirjaudu")%>"><%=dict.translate("log_in.painikeKirjaudu")%></button>
+            <button type="button" class="serif btn btn-dark m-2" onclick="location='/';return false;" Value="<%=dict.translate("log_in.painikePeru")%>"><%=dict.translate("log_in.painikePeru")%></button>  
         </form>
     </main>
         <% include footer %>

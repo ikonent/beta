@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="<%- dict.getCurrentLocale().language %>">
     <head>
         <% include head %>
 
@@ -96,10 +96,10 @@
         <% include hallinta %>
         <div class="dropzone" id="poistoon" ></div>
         <main class="flex justify-content-center flex-column">
-            <div class="serif"><a href="/">Aiheet</a> >
+            <div class="serif"><a href="/"><%= dict.translate('common.aiheet') %></a> >
             </div>
 
-            <section><h2 class="serif">Omat viestit</h2></section>
+            <section><h2 class="serif"><%= dict.translate('omat.title') %></h2></section>
             <section>
                 <% for(var i = 0; i < messages.length; i++) { %>
                 <article class="kommentti row oma" id="oma_<%= messages[i].id %>" draggable="true" >

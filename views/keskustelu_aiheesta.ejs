@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="<%- dict.getCurrentLocale().language %>">
     <head>
         <% include head %>
 
@@ -115,7 +115,7 @@
         <% include hallinta %>
         <div class="dropzone" id="poistoon" ></div>
         <main class="flex justify-content-center flex-column">
-            <div class="serif"><a href="/">Aiheet</a> > Keskustelu aiheesta:
+            <div class="serif"><a href="/"><%=dict.translate("common.aiheet") %></a> > <%=dict.translate('aiheesta.title')%>:
             </div>
 
             <section><h2 class="serif"><%= messages[0].topic %></h2></section>
@@ -125,7 +125,7 @@
                     <span class="tunnus col-sm-1"><%= messages[i].id %></span>
                     <span style="display:none;"><%= messages[i].topic %></span>
                     <div class="col-sm-9 row">
-                        <h3 class="otsikko col-sm-12"><b class="serif"><%- (messages[i].sender== login)?'Sinä</b> sanot':messages[i].sender+'</b> sanoo'   %>:</h3>
+                        <h3 class="otsikko col-sm-12"><b class="serif"><%- (messages[i].sender== login)?dict.translate('aiheesta.sanot'):messages[i].sender+'</b> '+dict.translate('aiheesta.sanoo')   %>:</h3>
                         <p class="col-sm-12 <%= (h_tiivis)?'tiivis':''%>" id="komm_<%-messages[i].id %>"><%= messages[i].message%></p>
                     </div>
                     <%- (h_tiivis)?'<button id="nappi_'+messages[i].id+'" class="col-sm-2 btn btn-dark" onclick="laajennaYksi('+messages[i].id+')" value="Laajenna">Laajenna</button>':'' %>

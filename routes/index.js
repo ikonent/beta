@@ -3,34 +3,42 @@ var router = express.Router();
 var session = require('express-session');
 var db = require('../dbOperations');
 const Localization = require("localizationjs");
+const locale = new Localization({ defaultLocale: "fi" });
 
 //Dictionaries
-var dictionaryFI = require('../languages/fi');
-var dictionaryEN = require('../languages/en');
+const dictionaryFI = require('../languages/fi');
+const dictionaryEN = require('../languages/en');
 // create a locale manager
-const locale = new Localization({ defaultLocale: "en" });
 
 // Globaalit muuttujat
 
-// add the dictionary for english language
-
-
-
+// add the dictionaries
 locale.addDict("fi", dictionaryFI);
-
 locale.addDict("en", dictionaryEN);
 
+
+function checkLang(langParam){
+    if (langParam !=undefined) {
+        // This is to show language on URL
+        var addToUrl ='';
+        if (langParam != locale.getDefaultLocale()){
+            addToUrl = langParam+'/';
+        }
+        locale.setCurrentLocale(langParam);
+        return addToUrl;
+    }
+}
 
 /* GET home page. */
 router.get('(/:lang(en|fi))?/', function(req, res, next) {
     //console.log(req);
     //console.log(res);
     //console.log(req.query);
-    console.log(req.session);
+    //console.log(req.session);
     
-    if(req.params.lang !=undefined) {
-        locale.setCurrentLocale(req.params.lang);
-    }
+    // Check if there is an effort to change lang
+    var addToUrl = checkLang(req.params.lang);
+    
     
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
@@ -58,7 +66,7 @@ router.get('(/:lang(en|fi))?/', function(req, res, next) {
             login: req.session.userid,
             messages: msg,
             topikki:'',
-            url:'?',
+            url:addToUrl+'?',
             onLogPage:false,
             onSignPage:false,
             p_uusin:true,                       // Is newest message on top button visible
@@ -70,10 +78,17 @@ router.get('(/:lang(en|fi))?/', function(req, res, next) {
     });
 });
 
-
-
+const tietoa_urls = [
+    'tietoa',
+    'about'
+];
+// '(/:lang(en|fi))?/'+locale.translate("urls.tietoa")
 /* GET about page. */
-router.get('/'+locale.translate("urls.tietoa"), function(req, res) {
+router.get('/'+tietoa_urls.join('|')+'/:lang?', function(req, res) {
+    // Check if there is an effort to change lang
+    console.log("lang "+req.params.lang);
+    var addToUrl = checkLang(req.params.lang);
+    
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
     }
@@ -82,7 +97,7 @@ router.get('/'+locale.translate("urls.tietoa"), function(req, res) {
                                  dict:locale,                          
                                  onLogPage:false,
                                  onSignPage:false,
-                                 url:'/'+locale.translate("urls.tietoa")+'/?',
+                                 url:addToUrl+'/'+locale.translate("urls.tietoa")+'/?',
                                  topikki:'',
                                  p_uusin:false,
                                  p_tiivis:false,
@@ -92,10 +107,16 @@ router.get('/'+locale.translate("urls.tietoa"), function(req, res) {
                                 });
 });
 
-
+const aiheesta_urls = [
+    'keskustelu_aiheesta',
+    'on_topic'
+];
+// jemmaan tämä reg exp: (/:lang(fi))?
 
 /* GET about page. */
-router.get('/keskustelu_aiheesta', function(req, res) {
+router.get('/'+aiheesta_urls.join('|')+'/:lang?', function(req, res) {
+    // Check if user tries to control language
+    var addToUrl = checkLang(req.params.lang);
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
     }
@@ -130,16 +151,17 @@ router.get('/keskustelu_aiheesta', function(req, res) {
                 return res.render('alert', {
                     title:"Jotain meni pieleen",
                     returl:'/keskustelu_aiheesta',
-                                 login: req.session.userid,                            
-                                 onLogPage:false,
-                                 onSignPage:false,
-                                 url:'/tietoa/?',
-                                 topikki:'',
-                                 p_uusin:false,
-                                 p_tiivis:false,
-                                 h_uusin:req.session.h_uusin,
-                                 h_tiivis:req.session.h_tiivis,
-                                 p_tietoa:true
+                                dict:locale,
+                                login: req.session.userid,                            
+                                onLogPage:false,
+                                onSignPage:false,
+                                url:'/tietoa/?',
+                                topikki:'',
+                                p_uusin:false,
+                                p_tiivis:false,
+                                h_uusin:req.session.h_uusin,
+                                h_tiivis:req.session.h_tiivis,
+                                p_tietoa:true
                 });
                 //console.log("Pieleen meni");
             }
@@ -147,25 +169,34 @@ router.get('/keskustelu_aiheesta', function(req, res) {
     } else if(req.query.id!= undefined){
         db.findMessages(req.query.id,req.session.h_uusin,function(msg) {
             return res.status(200).render('keskustelu_aiheesta', { title: 'Keskustelu',
-                                                      login: req.session.userid,
-                                                      messages:msg,
-                                                      onLogPage:false,
-                                                      onSignPage:false,
-                                                      topikki:req.query.id,
-                                                      url:'/keskustelu_aiheesta/?id='+req.query.id+'&',
-                                                      p_uusin:true,
-                                                      p_tiivis:true,
-                                                      h_uusin:req.session.h_uusin,
-                                                      h_tiivis:req.session.h_tiivis,
-                                                      p_tietoa:true });
+                                                    dict:locale,
+                                                    login: req.session.userid,
+                                                    messages:msg,
+                                                    onLogPage:false,
+                                                    onSignPage:false,
+                                                    topikki:req.query.id,
+                                                    url:'/keskustelu_aiheesta/?id='+req.query.id+'&',
+                                                    p_uusin:true,
+                                                    p_tiivis:true,
+                                                    h_uusin:req.session.h_uusin,
+                                                    h_tiivis:req.session.h_tiivis,
+                                                    p_tietoa:true });
         });
     } else {
         return res.status(302).redirect('/');
     }
 });
 
+const omat_urls = [
+    'omat_viestit',
+    'own_messages'  
+];
+
 /* GET own messages page. */
-router.get('/omat_viestit', function(req, res) {
+router.get('/'+omat_urls.join('|')+'/:lang?', function(req, res) {
+    // Check if user tries to control language
+    var addToUrl = checkLang(req.params.lang);
+    
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
     }
@@ -192,17 +223,18 @@ router.get('/omat_viestit', function(req, res) {
                 //console.log("Onnistui?! paluu keskusteluun.");
                 db.findUserMsgs(req.session.userid,req.session.h_uusin,function(msg) {
                     return res.status(200).render('omat_viestit', { title: 'omat_viestit',
-                                                              login: req.session.userid,
-                                                              messages:msg,
-                                                              onLogPage:false,
-                                                              onSignPage:false,
-                                                              topikki:'',
-                                                              url:'/omat_viestit/?',
-                                                              p_uusin:true,
-                                                              p_tiivis:true,
-                                                              h_uusin:req.session.h_uusin,
-                                                              h_tiivis:req.session.h_tiivis,
-                                                              p_tietoa:true });
+                          dict:locale,
+                          login: req.session.userid,
+                          messages:msg,
+                          onLogPage:false,
+                          onSignPage:false,
+                          topikki:'',
+                          url:'/omat_viestit/?',
+                          p_uusin:true,
+                          p_tiivis:true,
+                          h_uusin:req.session.h_uusin,
+                          h_tiivis:req.session.h_tiivis,
+                          p_tietoa:true });
                 });
 
             } else if (rvalue) {
@@ -214,40 +246,51 @@ router.get('/omat_viestit', function(req, res) {
                 return res.status(302).render('alert', {
                     title:"Jotain meni pieleen",
                     returl:'/omat_viestit',
-                                 login: req.session.userid,                            
-                                 onLogPage:false,
-                                 onSignPage:false,
-                                 url:'/tietoa/?',
-                                 topikki:'',
-                                 p_uusin:false,
-                                 p_tiivis:false,
-                                 h_uusin:req.session.h_uusin,
-                                 h_tiivis:req.session.h_tiivis,
-                                 p_tietoa:true
+                            dict:locale,
+                             login: req.session.userid,                            
+                             onLogPage:false,
+                             onSignPage:false,
+                             url:'/tietoa/?',
+                             topikki:'',
+                             p_uusin:false,
+                             p_tiivis:false,
+                             h_uusin:req.session.h_uusin,
+                             h_tiivis:req.session.h_tiivis,
+                             p_tietoa:true
                 });
             }
         });
     } else if(req.session.userid!= undefined){
         db.findUserMsgs(req.session.userid,req.session.h_uusin,function(msg) {
-            return res.status(200).render('omat_viestit', { title: 'omat_viestit',
-                                                      login: req.session.userid,
-                                                      messages:msg,
-                                                      onLogPage:false,
-                                                      onSignPage:false,
-                                                      topikki:'',
-                                                      url:'/omat_viestit/?',
-                                                      p_uusin:true,
-                                                      p_tiivis:true,
-                                                      h_uusin:req.session.h_uusin,
-                                                      h_tiivis:req.session.h_tiivis,
-                                                      p_tietoa:true });
+            return res.status(200).render('omat_viestit', { 
+                title: 'omat_viestit',
+                dict:locale,
+                  login: req.session.userid,
+                  messages:msg,
+                  onLogPage:false,
+                  onSignPage:false,
+                  topikki:'',
+                  url:'/omat_viestit/?',
+                  p_uusin:true,
+                  p_tiivis:true,
+                  h_uusin:req.session.h_uusin,
+                  h_tiivis:req.session.h_tiivis,
+                  p_tietoa:true });
         });
     } else {
         return res.status(302).redirect('/');
     }
 });
 
-router.get('/uusi_viesti', function(req, res, next) {
+const viesti_urls = [
+    'uusi_viesti',
+    'new_message'  
+];
+
+router.get('/'+viesti_urls.join('|')+'/:lang?', function(req, res, next) {
+    // Check if user tries to control language
+    var addToUrl = checkLang(req.params.lang);
+    
     // Jos käyttäjä ei ole kirjautunut, ei voi kirjoittaa viestiä
     if(req.session.userid === undefined || req.session.userid == "") {
         req.session.userid = null;
@@ -255,61 +298,69 @@ router.get('/uusi_viesti', function(req, res, next) {
     // jos aihe on määritelty, on kirjoittaja jatkamassa viestiketjuun
     if(req.query.topic != undefined){
         db.findTopic(req.query.topic,function(msg) {
-            return res.status(200).render('uusi_viesti', { title: 'Jatka keskustelua',
-                                              login: req.session.userid,
-                                              msgTopic:msg[0].topic,
-                                              msg:'',
-                                              msgId:'',
-                                              onLogPage:false,
-                                              onSignPage:false,
-                                              topikki:req.query.topic,  // Tämä on itseasiassa ID-numero hallintapaneelia varten
-                                              url:'/uusi_viesti/?topic='+req.query.topic+'&',
-                                              p_uusin:true,
-                                              p_tiivis:false,
-                                              h_uusin:req.session.h_uusin,
-                                              h_tiivis:req.session.h_tiivis,
-                                              p_tietoa:true });
+            return res.status(200).render('uusi_viesti', {
+                title: 'Jatka keskustelua',
+                dict:locale,
+                  login: req.session.userid,
+                  msgTopic:msg[0].topic,
+                  msg:'',
+                  msgId:'',
+                  onLogPage:false,
+                  onSignPage:false,
+                  topikki:req.query.topic,  // Tämä on itseasiassa ID-numero hallintapaneelia varten
+                  url:'/uusi_viesti/?topic='+req.query.topic+'&',
+                  p_uusin:true,
+                  p_tiivis:false,
+                  h_uusin:req.session.h_uusin,
+                  h_tiivis:req.session.h_tiivis,
+                  p_tietoa:true });
         });
     // Jos on määritelty muokkaa-arvo, kirjoittaja haluaa muokata vanhaa viestiä
     } else if (req.query.muokkaa !=undefined){
         db.findSingleMsg(req.query.muokkaa,req.session.userid,function(msg) {
             return res.status(200).render('uusi_viesti', { title: 'Muokkaa viestiä',
-                                              login: req.session.userid,
-                                              msgTopic:msg[0].topic,
-                                              msg:msg[0].message,
-                                              msgId:msg[0].id,
-                                              onLogPage:false,
-                                              onSignPage:false,
-                                              topikki:'',
-                                              url:'/uusi_viesti/?muokkaa='+req.query.muokkaa+'&',
-                                              p_uusin:true,
-                                              p_tiivis:false,
-                                              h_uusin:req.session.h_uusin,
-                                              h_tiivis:req.session.h_tiivis,
-                                              p_tietoa:true });
+                dict:locale,
+                  login: req.session.userid,
+                  msgTopic:msg[0].topic,
+                  msg:msg[0].message,
+                  msgId:msg[0].id,
+                  onLogPage:false,
+                  onSignPage:false,
+                  topikki:'',
+                  url:'/uusi_viesti/?muokkaa='+req.query.muokkaa+'&',
+                  p_uusin:true,
+                  p_tiivis:false,
+                  h_uusin:req.session.h_uusin,
+                  h_tiivis:req.session.h_tiivis,
+                  p_tietoa:true });
         });
     } else {
         // Muussa tapauksessa kirjoittaja aloittaa uuden viestiketjun
         
 
-        return res.status(200).render('uusi_viesti', { title: 'Kirjoita uusi viesti',
-                                          login: req.session.userid,
-                                          onLogPage:false,
-                                          onSignPage:false,
-                                          url:'/uusi_viesti/?',
-                                          msgTopic:'',
-                                          msg:'',
-                                          msgId:'',
-                                          topikki:'',
-                                          p_uusin:true,
-                                          p_tiivis:false,
-                                          h_uusin:req.session.h_uusin,
-                                          h_tiivis:req.session.h_tiivis,
-                                          p_tietoa:true });
+        return res.status(200).render('uusi_viesti', {
+            title: 'Kirjoita uusi viesti',
+            dict:locale,
+              login: req.session.userid,
+              onLogPage:false,
+              onSignPage:false,
+              url:'/uusi_viesti/?',
+              msgTopic:'',
+              msg:'',
+              msgId:'',
+              topikki:'',
+              p_uusin:true,
+              p_tiivis:false,
+              h_uusin:req.session.h_uusin,
+              h_tiivis:req.session.h_tiivis,
+              p_tietoa:true });
     }
 });
 
-router.post('/uusi_viesti', function(req, res, next) {
+router.post('/'+viesti_urls.join('|')+'/:lang?', function(req, res, next) {
+    // Check if user tries to control language
+    var addToUrl = checkLang(req.params.lang);
+    
     //console.log(req.body);
     if(req.body.muokkaa.length >0) {
         //console.log("Edit-tallennus. "+req.toString());
@@ -319,17 +370,18 @@ router.post('/uusi_viesti', function(req, res, next) {
             else
                 return res.status(400).render('alert', {
                     title:"Jotain meni pieleen",
+                    dict:locale,
                     returl:'/uusi_viesti',
-                                 login: req.session.userid,                            
-                                 onLogPage:false,
-                                 onSignPage:false,
-                                 url:'/tietoa/?',
-                                 topikki:'',
-                                 p_uusin:false,
-                                 p_tiivis:false,
-                                 h_uusin:req.session.h_uusin,
-                                 h_tiivis:req.session.h_tiivis,
-                                 p_tietoa:true
+                     login: req.session.userid,                            
+                     onLogPage:false,
+                     onSignPage:false,
+                     url:'/tietoa/?',
+                     topikki:'',
+                     p_uusin:false,
+                     p_tiivis:false,
+                     h_uusin:req.session.h_uusin,
+                     h_tiivis:req.session.h_tiivis,
+                     p_tietoa:true
                 });
         });
     } else {
@@ -342,6 +394,7 @@ router.post('/uusi_viesti', function(req, res, next) {
             else {
                 return res.status(400).render('alert', {
                     title:"Jotain meni pieleen",
+                    dict:locale,
                     returl:'/uusi_viesti'
                 });
             }
