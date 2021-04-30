@@ -12,10 +12,10 @@ variables:
   azureSubscription: '11230534-819f-420f-86d7-df8cb7fa9790'
 
   # Web app name
-  webAppName: ''
+  webAppName: 'ohtu-beta'
 
   # Environment name
-  environmentName: ''
+  environmentName: 'ohtu-beta'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
