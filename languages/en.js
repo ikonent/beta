@@ -23,10 +23,6 @@ module.exports = {
     },
     common: {
         aiheet:"Topics"  
-    },heesta: {
-        title:'Keskustelu aiheesta',
-        sanoo:'sanoo',
-        sanot:'Sinä</b> sanot'
     },
     index: {
         otsikko: "Topic titles",
@@ -52,6 +48,13 @@ module.exports = {
     omat:{
         title:'Own messages',
         
+    },
+    uusi_viesti:{
+        title:'Start a new discussion',
+        otsikko:'Topic',
+        viesti:'Message',
+        lahetaPainike:'Send',
+        peruPainike:'Cancel'
     },
     tietoa:{
         title:"About",
