@@ -43,7 +43,7 @@
         <nav class="serif row"><a href="/<%=addToUrl%>"><%=dict.translate("common.aiheet")%></a>&nbsp;> <%=dict.translate("uusi_kayttaja.title")%>
         </nav>
         <h2  class="serif"><%=dict.translate("uusi_kayttaja.otsikko")%></h2>
-        <form method='POST' onSubmit="return checkPassword(this)" href='/<%=dict.translate("urls.kayttajat") + "/" + dict.translate("urls.rekisteroityminen")+addToUrl%>'>
+        <form method='POST' onSubmit="return checkPassword(this)" href='/<%=dict.translate("urls.kayttajat") + "/" + dict.translate("urls.rekisteroityminen")+'/'+addToUrl%>'>
             <div>
                 <label for="userid" class="serif"><%=dict.translate("uusi_kayttaja.kTunnus")%></label><br>
                 <input type="text" placeholder="<%=dict.translate("uusi_kayttaja.tunnus")%>" name="userid" required="true" value=""><br>

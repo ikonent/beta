@@ -16,7 +16,7 @@ body {
     background: #f2f2f2;
     color: #3e3e40;
     font-family: 'Noto Sans', Verdana, sans-serif;
-    font-size:medium;
+    font-size: medium;
     font-weight: 300;
     word-wrap: break-word;
 }
@@ -45,7 +45,7 @@ footer {
  
 }
 footer>h1 {
-       font-size:larger;
+    font-size:larger;
 }
 header>h1, footer>h1 {
     color: #f2f2f2; 
@@ -69,8 +69,8 @@ header>h1, footer>h1 {
     color: #f2f2f2; // Vaalein
     width: 100%;
     /*display: flex;*/ /*commented out*/
-    flex: 0 0 100%; /* this both are useless since there no flex elemnts there*/
-    flex-basis: 60%;/* this both are useless since there no flex elemnts there*/
+    /* flex: 0 0 100%;*/ /* this both are useless since there no flex elemnts there*/
+    /* flex-basis: 60%; */ /* this both are useless since there no flex elemnts there*/
 }
 .symboli{
     display: inline-block;
@@ -199,7 +199,6 @@ b {
 }
 
 .oma {
-    
     opacity:90%; /*changed opacity as Mika asked in his bug*/
     background-color:#f2f2f2; /* #8d95a6;*/
     background-blend-mode: soft-light;
@@ -221,7 +220,7 @@ footer{
     visibility: collapse;
 }
 #poistoon {
-    /*background-color: green;*/
+   /* background-color: green;*/
     float:left;
     left:0;
 }
@@ -229,14 +228,6 @@ footer{
     /*background-color: red;*/
     float: right;
     right: 0;
-}
-.dropzone {
-    display: block;
-    position: fixed;
-    width: 40%;
-    height: 100%;
-    top:0;
-    z-index: -5;
 }
 #jatkoon.hilit_dz {
     
@@ -249,11 +240,20 @@ footer{
 }
 #poistoon.hilit_dz {
     background-size: contain;
- 
+    
     background-position: center;
     background-repeat: no-repeat;
     background-image: url('/images/poista_bg.png');
 }
+.dropzone {
+    display: block;
+    position: fixed;
+    width: 10%; 
+    height: 100%;
+    top:0;
+    z-index: -50;
+}
+
 
 /*added to prevent word-wrap on page oma_viestiti*/
     span.tunnus.col-sm-1{

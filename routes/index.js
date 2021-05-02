@@ -24,16 +24,18 @@ router.get('/:lang([a-z]{2})?/', function(req, res, next) {
     //console.log(req.query);
     //console.log(req.session);
     // Check if there is an effort to change lang
-    var add2Url =''
+    
+    console.log("sesloc "+req.session.locale+" "+req.params.lang);
+    var add2Url ='';
     if(req.session.locale === undefined) {
         if (req.params.lang !== undefined && locale.hasDict(req.params.lang)) {
             req.session.locale = req.params.lang;
             locale.setCurrentLocale(req.session.locale);
         } else if (locale.getCurrentLocale()!==undefined){
-            req.session.locale = locale.getCurrentLocale();
+            req.session.locale = locale.getCurrentLocale().language;
         } else {
-            req.session.locale = locale.getDefaultLocale();
-            locale.setCurrentLocale(locale.getDefaultLocale());
+            req.session.locale = locale.getDefaultLocale().language;
+            locale.setCurrentLocale(locale.getDefaultLocale().language);
         }
     } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
         req.session.locale = req.params.lang;
@@ -94,20 +96,25 @@ const tietoa_urls = [
 ];
 // '(/:lang(en|fi))?/'+locale.translate("urls.tietoa")
 /* GET about page. */
-router.get('/'+tietoa_urls.join('|')+'/:lang([a-z]{2})?', function(req, res) {
+router.get('/:page('+tietoa_urls.join('|')+')/:lang([a-z]{2})?/', function(req, res) {
     // Check if there is an effort to change lang
-    var add2Url =''
+    var add2Url ='';
+    console.log("sesloc "+req.session.locale+" "+req.params.lang+" "+req.url)
      if(req.session.locale === undefined) {
         if (req.params.lang !== undefined && locale.hasDict(req.params.lang)) {
+            console.log("nollasta "+req.params.lang)
             req.session.locale = req.params.lang;
             locale.setCurrentLocale(req.session.locale);
         } else if (locale.getCurrentLocale()!==undefined){
-            req.session.locale = locale.getCurrentLocale();
+            console.log("nykyinne "+locale.getCurrentLocale().language)
+            req.session.locale = locale.getCurrentLocale().language;
         } else {
-            req.session.locale = locale.getDefaultLocale();
-            locale.setCurrentLocale(locale.getDefaultLocale());
+            console.log("oletus "+locale.getDefaultLocale())
+            req.session.locale = locale.getDefaultLocale().language;
+            locale.setCurrentLocale(locale.getDefaultLocale().language);
         }
     } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
+        console.log("muutos "+req.params.lang)
         req.session.locale = req.params.lang;
         locale.setCurrentLocale(req.session.locale);
         
@@ -147,7 +154,7 @@ const keskustelu_aiheesta_urls = [
 // jemmaan tämä reg exp: (/:lang(fi))?
 
 /* GET about page. */
-router.get('/'+keskustelu_aiheesta_urls.join('|')+'/:lang([a-z]{2})?', function(req, res) {
+router.get('/:page('+keskustelu_aiheesta_urls.join('|')+')/:lang([a-z]{2})?/', function(req, res) {
     // Check if there is an effort to change lang
     var add2Url =''
      if(req.session.locale === undefined) {
@@ -155,10 +162,10 @@ router.get('/'+keskustelu_aiheesta_urls.join('|')+'/:lang([a-z]{2})?', function(
             req.session.locale = req.params.lang;
             locale.setCurrentLocale(req.session.locale);
         } else if (locale.getCurrentLocale()!==undefined){
-            req.session.locale = locale.getCurrentLocale();
+            req.session.locale = locale.getCurrentLocale().language;
         } else {
-            req.session.locale = locale.getDefaultLocale();
-            locale.setCurrentLocale(locale.getDefaultLocale());
+            req.session.locale = locale.getDefaultLocale().language;
+            locale.setCurrentLocale(locale.getDefaultLocale().language);
         }
     } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
         req.session.locale = req.params.lang;
@@ -193,10 +200,10 @@ router.get('/'+keskustelu_aiheesta_urls.join('|')+'/:lang([a-z]{2})?', function(
     }
 
     if(req.query.delid != undefined){
-        //console.log("poistetaan id: "+req.query.delid);
-        db.deleteMessage(req.query.delid,req.session.userid,function(rvalue) {
+        /*/console.log("poistetaan id: "+req.query.delid); */
+        db.deleteMessage(req.query.delid, req.session.userid, function(rvalue) {
             if(rvalue && req.query.id != undefined){
-                //console.log("Onnistui?! paluu keskusteluun.");
+                console.log("Onnistui?! paluu keskusteluun.");
                 return res.status(302).redirect('./?id='+req.query.id);
 
             } else if (req.query.id === undefined){
@@ -205,8 +212,8 @@ router.get('/'+keskustelu_aiheesta_urls.join('|')+'/:lang([a-z]{2})?', function(
                 return res.status(302).redirect('/');
             } else {
                 return res.render('alert', {
-                    title:"Jotain meni pieleen",
-                    returl:'/keskustelu_aiheesta',
+                    title:locale.translate("alert.pieleenMeni"),
+                    returl:'/'+locale.translate("urls.keskustelu"),
                     dict:locale,
                     addToUrl:add2Url,
                     login: req.session.userid,                            
@@ -254,7 +261,7 @@ const omat_urls = [
 ];
 
 /* GET own messages page. */
-router.get('/'+omat_urls.join('|')+'/:lang([a-z]{2})?', function(req, res) {
+router.get('/:page('+omat_urls.join('|')+')/:lang([a-z]{2})?/', function(req, res) {
     // Check if there is an effort to change lang
     var add2Url =''
      if(req.session.locale === undefined) {
@@ -262,10 +269,10 @@ router.get('/'+omat_urls.join('|')+'/:lang([a-z]{2})?', function(req, res) {
             req.session.locale = req.params.lang;
             locale.setCurrentLocale(req.session.locale);
         } else if (locale.getCurrentLocale()!==undefined){
-            req.session.locale = locale.getCurrentLocale();
+            req.session.locale = locale.getCurrentLocale().language;
         } else {
-            req.session.locale = locale.getDefaultLocale();
-            locale.setCurrentLocale(locale.getDefaultLocale());
+            req.session.locale = locale.getDefaultLocale().language;
+            locale.setCurrentLocale(locale.getDefaultLocale().language);
         }
     } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
         req.session.locale = req.params.lang;
@@ -374,7 +381,7 @@ const viesti_urls = [
     'new_message'  
 ];
 
-router.get('/'+viesti_urls.join('|')+'/:lang([a-z]{2})?', function(req, res, next) {
+router.get('/:page('+viesti_urls.join('|')+')/:lang([a-z]{2})?/', function(req, res, next) {
     /// Check if there is an effort to change lang
     var add2Url =''
      if(req.session.locale === undefined) {
@@ -382,9 +389,9 @@ router.get('/'+viesti_urls.join('|')+'/:lang([a-z]{2})?', function(req, res, nex
             req.session.locale = req.params.lang;
             locale.setCurrentLocale(req.session.locale);
         } else if (locale.getCurrentLocale()!==undefined){
-            req.session.locale = locale.getCurrentLocale();
+            req.session.locale = locale.getCurrentLocale().language;
         } else {
-            req.session.locale = locale.getDefaultLocale();
+            req.session.locale = locale.getDefaultLocale().language;
             locale.setCurrentLocale(locale.getDefaultLocale());
         }
     } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
@@ -470,7 +477,7 @@ router.get('/'+viesti_urls.join('|')+'/:lang([a-z]{2})?', function(req, res, nex
     }
 });
 
-router.post('/'+viesti_urls.join('|')+'/:lang([a-z]{2})?', function(req, res, next) {
+router.post('/:page('+viesti_urls.join('|')+')/:lang([a-z]{2})?/', function(req, res, next) {
    // Check if there is an effort to change lang
     var add2Url =''
      if(req.session.locale === undefined) {
@@ -525,7 +532,7 @@ router.post('/'+viesti_urls.join('|')+'/:lang([a-z]{2})?', function(req, res, ne
             if(rvalue && req.body.topikki.length ==0)
                 return res.status(302).redirect('/');
             else if (rvalue)
-                return res.status(302).redirect('/'+dict.translate("urls.keskustelu")+'/?id='+req.body.topikki);
+                return res.status(302).redirect('/'+locale.translate("urls.keskustelu")+'/?id='+req.body.topikki);
             else {
                 return res.status(400).render('alert', {
                     title:locale.translate("alert.pieleenMeni"),

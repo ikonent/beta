@@ -23,19 +23,17 @@ const kirj_urls = [
     'log_in'
 ];
 
-router.get('/'+kirj_urls.join('|')+'/:lang([a-z]{2})?', function(req, res, next) {
-    console.log("d "+req.url);
-    
+router.get('/:page('+kirj_urls.join('|')+')/:lang([a-z]{2})?', function(req, res, next) {
     var add2Url =''
      if(req.session.locale === undefined) {
         if (req.params.lang !== undefined && locale.hasDict(req.params.lang)) {
             req.session.locale = req.params.lang;
             locale.setCurrentLocale(req.session.locale);
         } else if (locale.getCurrentLocale()!==undefined){
-            req.session.locale = locale.getCurrentLocale();
+            req.session.locale = locale.getCurrentLocale().language;
         } else {
-            req.session.locale = locale.getDefaultLocale();
-            locale.setCurrentLocale(locale.getDefaultLocale());
+            req.session.locale = locale.getDefaultLocale().language;
+            locale.setCurrentLocale(locale.getDefaultLocale().language);
         }
     } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
         req.session.locale = req.params.lang;
@@ -74,7 +72,7 @@ router.get('/'+kirj_urls.join('|')+'/:lang([a-z]{2})?', function(req, res, next)
 		});
 	else {
 		req.session.destroy();
-		return res.status(302).redirect('/');
+		return res.status(302).redirect('/'+add2Url);
 	}
 });
 
@@ -83,17 +81,17 @@ const uusiKayttaja_urls = [
     'registration'
 ];
 
-router.get('/'+uusiKayttaja_urls.join('|')+'/:lang([a-z]{2})?', function(req, res, next) {
+router.get('/:page('+uusiKayttaja_urls.join('|')+')/:lang([a-z]{2})?', function(req, res, next) {
     var add2Url =''
      if(req.session.locale === undefined) {
         if (req.params.lang !== undefined && locale.hasDict(req.params.lang)) {
             req.session.locale = req.params.lang;
             locale.setCurrentLocale(req.session.locale);
         } else if (locale.getCurrentLocale()!==undefined){
-            req.session.locale = locale.getCurrentLocale();
+            req.session.locale = locale.getCurrentLocale().language;
         } else {
-            req.session.locale = locale.getDefaultLocale();
-            locale.setCurrentLocale(locale.getDefaultLocale());
+            req.session.locale = locale.getDefaultLocale().language;
+            locale.setCurrentLocale(locale.getDefaultLocale().language);
         }
     } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
         req.session.locale = req.params.lang;
@@ -132,11 +130,32 @@ router.get('/'+uusiKayttaja_urls.join('|')+'/:lang([a-z]{2})?', function(req, re
 		});
 	else {
 		req.session.destroy();
-		return res.status(302).redirect('/');
+		return res.status(302).redirect('/'+add2Url);
 	}
 });
 
-router.post('/'+kirj_urls.join('|')+'/:lang([a-z]{2})?', (req, res) => {
+router.post('/:page('+kirj_urls.join('|')+')/:lang([a-z]{2})?', (req, res) => {
+    var add2Url =''
+     if(req.session.locale === undefined) {
+        if (req.params.lang !== undefined && locale.hasDict(req.params.lang)) {
+            req.session.locale = req.params.lang;
+            locale.setCurrentLocale(req.session.locale);
+        } else if (locale.getCurrentLocale()!==undefined){
+            req.session.locale = locale.getCurrentLocale().language;
+        } else {
+            req.session.locale = locale.getDefaultLocale().language;
+            locale.setCurrentLocale(locale.getDefaultLocale().language);
+        }
+    } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
+        req.session.locale = req.params.lang;
+        locale.setCurrentLocale(req.session.locale);
+        
+    }
+    // Change url-variable to have lang-parameter in urls
+    if(req.session.locale != locale.getDefaultLocale()){
+        add2Url = req.session.locale+'/';  // JOS ei oletuskieli, NIIN annetaan täydennysURL:iin
+    }
+    
     db.verifyUserId(req, function (data) {
         if (data == "Access denied") {
             return res.status(500).render('alert', {
@@ -197,7 +216,7 @@ router.post('/'+kirj_urls.join('|')+'/:lang([a-z]{2})?', (req, res) => {
             });	
         } else if (data == "exist") {
             req.session.userid = req.body.userid;
-            return res.status(302).redirect('/');
+            return res.status(302).redirect('/'+add2Url);
         } else {
             return res.status(400).render('alert', {
                     title:locale.translate("alerts.pieleenMeni"),
@@ -221,7 +240,29 @@ router.post('/'+kirj_urls.join('|')+'/:lang([a-z]{2})?', (req, res) => {
     });
 });
 
-router.post('/'+uusiKayttaja_urls.join('|')+'/:lang([a-z]{2})?', (req, res) => {
+router.post('/:page('+uusiKayttaja_urls.join('|')+')/:lang([a-z]{2})?', (req, res) => {
+    var add2Url =''
+     if(req.session.locale === undefined) {
+        if (req.params.lang !== undefined && locale.hasDict(req.params.lang)) {
+            req.session.locale = req.params.lang;
+            locale.setCurrentLocale(req.session.locale);
+        } else if (locale.getCurrentLocale()!==undefined){
+            req.session.locale = locale.getCurrentLocale().language;
+        } else {
+            req.session.locale = locale.getDefaultLocale().language;
+            locale.setCurrentLocale(locale.getDefaultLocale().language);
+        }
+    } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
+        req.session.locale = req.params.lang;
+        locale.setCurrentLocale(req.session.locale);
+        
+    }
+    // Change url-variable to have lang-parameter in urls
+    if(req.session.locale != locale.getDefaultLocale()){
+        add2Url = req.session.locale+'/';  // JOS ei oletuskieli, NIIN annetaan täydennysURL:iin
+    }
+    
+    
         db.registerUser(req, function(data) {
             switch(data) {
                 case "Access denied":
@@ -264,7 +305,7 @@ router.post('/'+uusiKayttaja_urls.join('|')+'/:lang([a-z]{2})?', (req, res) => {
                     break;
                 default:
                     req.session.userid = req.body.userid;
-                    return res.status(302).redirect('/');
+                    return res.status(302).redirect('/'+add2Url);
             }
         });
 });

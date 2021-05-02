@@ -11,15 +11,17 @@
                     item.addEventListener('dragstart', dragStart, false);
                     item.addEventListener('dragend', dragEnd, false);
                 });
-
                 // Start drag
                 function dragStart(e){
                     // Change opacity
                     this.style.opacity='0.4';
+                    e.stopPropagation();
+                    e.dataTransfer.effectAllowed = 'move';
                     // Define content
                     e.dataTransfer.setData('text/plain', e.target.id);                    
                     // Change possible target attributes to make dropzones more visible
                     targetit.forEach(item =>{
+                        item.style.width='35%';
                         item.style.zIndex='50';
                         item.classList.add('hilit_dz');
                         e.target.style.opacity='.4';       
@@ -32,6 +34,7 @@
                     this.style.opacity='1';
                     // Return attributes of target areas
                     targetit.forEach(item =>{
+                        item.style.width='5%';
                         item.classList.remove('hilit_dz');
                         item.style.zIndex='-5';
                         e.target.style.opacity='1';
@@ -77,20 +80,20 @@
 
                     if(this.id =='jatkoon') {
                         // if message is dropped on edit-area
-                        let url = '/'+dict.translate("urls.uusi_viesti")+addToUrl+'/?muokkaa='+iidee;
-                        console.log("editUrl "+url);
+                        let url = "/<%=dict.translate('urls.uusi_viesti')+'/'+addToUrl%>?muokkaa="+iidee;
+                        //console.log("editUrl "+url);
                         location = url;
                     } else { //ts. poistoon
                         // if message is droppedn on delete-area
                         let muuId = etsiMuuId(iidee); // get id of another message to return to the same conversation
                         if (muuId == undefined) { // if there is none, set only delid
-                            let url = '/'+addToUrl+'?delid='+iidee;
-                            console.log("delUrl "+url);
+                            let url = '/<%= dict.translate("urls.keskustelu")+'/'+addToUrl%>?delid='+iidee;
+                            //console.log("delUrl "+url);
                             location = url;               
                         } else {
                             // if another message is found, set also that
-                            let url = '/'+addToUrl+'?id='+muuId+'&delid='+iidee;
-                            console.log("delUrl "+url)
+                            let url = '/<%= dict.translate("urls.keskustelu")+'/'+addToUrl%>?id='+muuId+'&delid='+iidee;
+                            //console.log("delUrl "+url)
                             location = url;                
                         };
                     };

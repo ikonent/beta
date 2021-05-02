@@ -53,7 +53,7 @@
         <span><%= dict.translate("hallinta.uusiTili")%></span><%-(!onSignPage && login==null)?'</a>':'</span>'%>
 
         <!-- Uusi viesti -painike -->
-        <%-(login!=null)?'<a id="p_viesti" href="/'+dict.translate("urls.uusi_viesti")+'/'+addToUrl+((topikki != "")?"/?topic="+topikki:"")+'">':'<span>'%>
+        <%-(login!=null)?'<a id="p_viesti" href="/'+dict.translate("urls.uusi_viesti")+'/'+addToUrl+((topikki != "")?"?topic="+topikki:"")+'">':'<span>'%>
         <?xml version="1.0" encoding="UTF-8"?>
         <svg class="symboli" id="uusiviesti" width="50" height="50" version="1.1" viewBox="0 0 13.229 13.229" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
             <metadata>

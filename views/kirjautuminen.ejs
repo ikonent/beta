@@ -11,7 +11,7 @@
         <nav class="serif row"><a href="/<%=addToUrl%>"><%=dict.translate("common.aiheet") %></a>&nbsp;> <%= (login==null)?dict.translate("log_in.otsikkoSisaan"):dict.translate("log_in.otsikkoUlos") %>
         </nav>
         <h2  class="serif"><%=dict.translate("log_in.otsikkoIso") %></h2>
-        <form method='POST' action='/<%=dict.translate("urls.kayttajat") + "/" + dict.translate("urls.kirjautuminen")+addToUrl%>'>
+        <form method='POST' action='/<%=dict.translate("urls.kayttajat") + "/" + dict.translate("urls.kirjautuminen")+'/'+addToUrl%>'>
             <div>
                 <label for="userid" class="serif"><%=dict.translate("log_in.tunnus")%></label><br>
                 <input type="text" placeholder="<%=dict.translate("log_in.tunnusPre")%>" name="userid" required="true" value=""><br>
