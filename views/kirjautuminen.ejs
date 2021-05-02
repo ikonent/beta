@@ -8,10 +8,10 @@
         <% include hallinta %>
     
     <main class="flex justify-content-center flex-column">
-        <nav class="serif row"><a href="/"><%=dict.translate("common.aiheet") %></a>&nbsp;> <%= (login==null)?dict.translate("log_in.otsikkoSisaan"):dict.translate("log_in.otsikkoUlos") %>
+        <nav class="serif row"><a href="/<%=addToUrl%>"><%=dict.translate("common.aiheet") %></a>&nbsp;> <%= (login==null)?dict.translate("log_in.otsikkoSisaan"):dict.translate("log_in.otsikkoUlos") %>
         </nav>
         <h2  class="serif"><%=dict.translate("log_in.otsikkoIso") %></h2>
-        <form method='POST' action='/kayttajat/kirjautuminen'>
+        <form method='POST' action='/<%=dict.translate("urls.kayttajat") + "/" + dict.translate("urls.kirjautuminen")+addToUrl%>'>
             <div>
                 <label for="userid" class="serif"><%=dict.translate("log_in.tunnus")%></label><br>
                 <input type="text" placeholder="<%=dict.translate("log_in.tunnusPre")%>" name="userid" required="true" value=""><br>
@@ -19,7 +19,7 @@
                 <input type="password" placeholder="<%=dict.translate("log_in.passuPre")%>" name="passwd" required='true' value="">
             </div>
 			<button id="submit" type="submit" class="serif btn btn-dark" name="kirjaudu" value="<%=dict.translate("log_in.painikeKirjaudu")%>"><%=dict.translate("log_in.painikeKirjaudu")%></button>
-            <button type="button" class="serif btn btn-dark m-2" onclick="location='/';return false;" Value="<%=dict.translate("log_in.painikePeru")%>"><%=dict.translate("log_in.painikePeru")%></button>  
+            <button type="button" class="serif btn btn-dark m-2" onclick="location='/<%=addToUrl%>';return false;" Value="<%=dict.translate("log_in.painikePeru")%>"><%=dict.translate("log_in.painikePeru")%></button>  
         </form>
     </main>
         <% include footer %>

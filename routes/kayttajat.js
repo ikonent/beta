@@ -8,7 +8,7 @@ const Localization = require("localizationjs");
 const dictionaryFI = require('../languages/fi');
 const dictionaryEN = require('../languages/en');
 // create a locale manager
-const locale = new Localization({ defaultLocale: "en" });
+const locale = new Localization({ defaultLocale: "fi" });
 
 
 
@@ -18,30 +18,35 @@ const locale = new Localization({ defaultLocale: "en" });
 locale.addDict("fi", dictionaryFI);
 locale.addDict("en", dictionaryEN);
 
-function checkLang(langParam){
-    if (langParam !=undefined) {
-        // This is to show language on URL
-        var addToUrl ='';
-        if (langParam != locale.getDefaultLocale()){
-            addToUrl = langParam+'/';
-        }
-        locale.setCurrentLocale(langParam);
-        return addToUrl;
-    }
-}
-
-
-
 const kirj_urls = [
     'kirjautuminen',
     'log_in'
 ];
 
-router.get('/'+kirj_urls.join('|')+'/:lang?', function(req, res, next) {
+router.get('/'+kirj_urls.join('|')+'/:lang([a-z]{2})?', function(req, res, next) {
     console.log("d "+req.url);
     
-    // Check if there is an effort to change lang
-    var addToUrl = checkLang(req.params.lang);
+    var add2Url =''
+     if(req.session.locale === undefined) {
+        if (req.params.lang !== undefined && locale.hasDict(req.params.lang)) {
+            req.session.locale = req.params.lang;
+            locale.setCurrentLocale(req.session.locale);
+        } else if (locale.getCurrentLocale()!==undefined){
+            req.session.locale = locale.getCurrentLocale();
+        } else {
+            req.session.locale = locale.getDefaultLocale();
+            locale.setCurrentLocale(locale.getDefaultLocale());
+        }
+    } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
+        req.session.locale = req.params.lang;
+        locale.setCurrentLocale(req.session.locale);
+        
+    }
+    // Change url-variable to have lang-parameter in urls
+    if(req.session.locale != locale.getDefaultLocale()){
+        add2Url = req.session.locale+'/';  // JOS ei oletuskieli, NIIN annetaan täydennysURL:iin
+    }
+    
     
     if (req.session.h_uusin === undefined) {
         req.session.h_uusin = true;
@@ -54,11 +59,13 @@ router.get('/'+kirj_urls.join('|')+'/:lang?', function(req, res, next) {
 		return res.status(200).render('kirjautuminen', {
 			title: locale.translate("urls.otsikkoSisaan"),
             dict:locale, 
+            addToUrl:add2Url,
 			login: req.session.userid,
             onLogPage:true,
             onSignPage:false,
             topikki:'',
-            url:addToUrl+'/'+locale.translate("urls.kayttajat")+'/'+locale.translate("urls.kirjautuminen")+'/?',
+           currUrl:'/'+locale.translate("urls.kayttajat")+'/'+locale.translate("urls.kirjautuminen")+'/',
+            urlSuffix:'?',
             p_uusin:false,
             p_tiivis:false,
             h_uusin:req.session.h_uusin,
@@ -73,12 +80,31 @@ router.get('/'+kirj_urls.join('|')+'/:lang?', function(req, res, next) {
 
 const uusiKayttaja_urls = [
     'rekisteroityminen',
-    'add_user'
+    'registration'
 ];
 
-router.get('/'+uusiKayttaja_urls.join('|')+'/:lang?', function(req, res, next) {
-    // Check if there is an effort to change lang
-    var addToUrl = checkLang(req.params.lang);
+router.get('/'+uusiKayttaja_urls.join('|')+'/:lang([a-z]{2})?', function(req, res, next) {
+    var add2Url =''
+     if(req.session.locale === undefined) {
+        if (req.params.lang !== undefined && locale.hasDict(req.params.lang)) {
+            req.session.locale = req.params.lang;
+            locale.setCurrentLocale(req.session.locale);
+        } else if (locale.getCurrentLocale()!==undefined){
+            req.session.locale = locale.getCurrentLocale();
+        } else {
+            req.session.locale = locale.getDefaultLocale();
+            locale.setCurrentLocale(locale.getDefaultLocale());
+        }
+    } else if(req.params.lang !== undefined && locale.hasDict(req.params.lang) && req.session.locale != req.params.lang ) {
+        req.session.locale = req.params.lang;
+        locale.setCurrentLocale(req.session.locale);
+        
+    }
+    // Change url-variable to have lang-parameter in urls
+    if(req.session.locale != locale.getDefaultLocale()){
+        add2Url = req.session.locale+'/';  // JOS ei oletuskieli, NIIN annetaan täydennysURL:iin
+    }
+    
     
     if (req.session.h_uusin === undefined) {
         req.session.h_uusin = true;
@@ -89,13 +115,15 @@ router.get('/'+uusiKayttaja_urls.join('|')+'/:lang?', function(req, res, next) {
     
 	if( req.session.userid == null )
 		return res.status(200).render('rekisteroityminen', {
-			title: 'Luo Käyttäjätunnus',
+			title: locale.translate("uusi_kayttaja.title"),
             dict:locale, 
+            addToUrl:add2Url,
 			login: req.session.userid,
             onLogPage:false,
             onSignPage:true,
             topikki:'',
-            url:addToUrl+'/'+locale.translate("urls.kayttajat")+'/'+locale.translate("urls.rekisteroityminen")+'/?',
+           currUrl:'/'+locale.translate("urls.kayttajat")+'/'+locale.translate("urls.rekisteroityminen")+'/',
+            urlSuffix:'?',
             p_uusin:false,
             p_tiivis:false,
             h_uusin:req.session.h_uusin,
@@ -108,19 +136,21 @@ router.get('/'+uusiKayttaja_urls.join('|')+'/:lang?', function(req, res, next) {
 	}
 });
 
-router.post('/'+kirj_urls.join('|')+'/:lang?', (req, res) => {
+router.post('/'+kirj_urls.join('|')+'/:lang([a-z]{2})?', (req, res) => {
     db.verifyUserId(req, function (data) {
         if (data == "Access denied") {
             return res.status(500).render('alert', {
-                title: 'Tietokantaan ei saa nyt yhteyttä. Yritä myöhemmin uudestaan.',
-                    returl: "/kayttajat/kirjautuminen",
+                title: locale.translate("alerts.yhteysPoikkiDb"),
+                    returl: '/'+locale.translate("urls.kayttajat")+'/'+locale.translate("urls.kirjautuminen")+add2Url,
                     dict:locale, 
+                    addToUrl:add2Url,
                     virhe:data,
                     login: req.session.userid,
                     onLogPage:false,
                     onSignPage:true,
                     topikki:'',
-                    url:'/alert/?',
+                    currUrl:'/'+dict.translate("urls.alert")+'/',
+                    urlSuffix:'?',
                     p_uusin:false,
                     p_tiivis:false,
                     h_uusin:req.session.h_uusin,
@@ -129,15 +159,17 @@ router.post('/'+kirj_urls.join('|')+'/:lang?', (req, res) => {
             });	
         } else if (data == "not exist") {
             return res.status(404).render('alert', {
-                title: 'Tietojasi ei löytynyt. Rekisteröidy ennen käyttöä!',
-                    returl: "/kayttajat/kirjautuminen",
+                title: locale.translate("alerts.eiKayttajatunnusta"),
+                    returl: '/'+locale.translate("urls.kayttajat")+'/'+locale.translate("urls.kirjautuminen")+add2Url,
                     dict:locale, 
+                                addToUrl:add2Url,
                     virhe:data,
                     login: req.session.userid,
                     onLogPage:false,
                     onSignPage:true,
                     topikki:'',
-                    url:'/alert/?',
+                    currUrl:'/'+locale.translate("urls.alert")+'/',
+                    urlSuffix:'?',
                     p_uusin:false,
                     p_tiivis:false,
                     h_uusin:req.session.h_uusin,
@@ -146,15 +178,17 @@ router.post('/'+kirj_urls.join('|')+'/:lang?', (req, res) => {
             });
         } else if (data == "not valid") {
             return res.status(406).render('alert', {
-                title: 'Salasana ei täsmää!',
+                title: locale.translate("alerts.salasanaVaarin"),
                     dict:locale, 
-                    returl: "/kayttajat/kirjautuminen",
+                                addToUrl:add2Url,
+                    returl: '/'+locale.translate("urls.kayttajat")+'/'+locale.translate("urls.kirjautuminen")+add2Url,
                     virhe:data,
                     login: req.session.userid,
                     onLogPage:false,
                     onSignPage:true,
                     topikki:'',
-                    url:'/alert/?',
+                    currUrl:'/'+locale.translate("alert")+'/',
+                    urlSuffix:'?',
                     p_uusin:false,
                     p_tiivis:false,
                     h_uusin:req.session.h_uusin,
@@ -166,59 +200,65 @@ router.post('/'+kirj_urls.join('|')+'/:lang?', (req, res) => {
             return res.status(302).redirect('/');
         } else {
             return res.status(400).render('alert', {
-                    title:"Jotain meni pieleen",
-                    returl: "/kayttajat/kirjautuminen",
+                    title:locale.translate("alerts.pieleenMeni"),
+                    returl: '/'+locale.translate("urls.kayttajat")+'/'+locale.translate("urls.kirjautuminen")+add2Url,
                     dict:locale, 
+                    addToUrl:add2Url,
                     virhe:data,
                     login: req.session.userid,
                     onLogPage:false,
                     onSignPage:true,
                     topikki:'',
-                    url:'/alert/?',
+                    currUrl:'/'+locale.translate("alert")+'/',
+                    urlSuffix:'?',
                     p_uusin:false,
                     p_tiivis:false,
                     h_uusin:req.session.h_uusin,
-                    h_tiivis:req.session.h_tiivis,
+                    //h_tiivis:req.session.h_tiivis,
                     p_tietoa:true
                 });
         };
     });
 });
 
-router.post('/'+uusiKayttaja_urls.join('|')+'/:lang?', (req, res) => {
+router.post('/'+uusiKayttaja_urls.join('|')+'/:lang([a-z]{2})?', (req, res) => {
         db.registerUser(req, function(data) {
             switch(data) {
                 case "Access denied":
                     return res.status(500).render('alert', {
-                        title: 'Tietokantaan ei saa nyt yhteyttä. Yritä myöhemmin uudestaan.',
-                        returl: "/kayttajat/rekisteroityminen",
+                        title: locale.translate("alerts.yhteysPoikkiDb"),
+                        returl: '/'+locale.translate("urls.kayttajat")+'/'+locale.translate("urls.rekisteroityminen")+add2Url,
                         dict:locale, 
+                                addToUrl:add2Url,
                         login: req.session.userid,
                         onLogPage:false,
                         onSignPage:true,
                         topikki:'',
-                        url:'/alert/?',
+                        currUrl:'/'+locale.translate("alert")+'/',
+                        urlSuffix:'?',
                         p_uusin:false,
                         p_tiivis:false,
                         h_uusin:req.session.h_uusin,
-                        h_tiivis:req.session.h_tiivis,
+                        //h_tiivis:req.session.h_tiivis,
                         p_tietoa:true
                     });	
                     break;
                 case "Username already exists":
                     return res.status(409).render('alert', {
-                        title: 'Samanniminen käyttäjä on jo olemassa.',
-                        returl: "/kayttajat/rekisteroityminen",
+                        title: locale.translate("alerts.tunnusOlemassa"),
+                        returl: '/'+locale.translate("urls.kayttajat")+'/'+locale.translate("urls.rekisteroityminen")+add2Url,
                         dict:locale, 
+                                addToUrl:add2Url,
                         login: req.session.userid,
                         onLogPage:false,
                         onSignPage:true,
                         topikki:'',
-                        url:'/alert/?',
+                        currUrl:'/'+locale.translate("alert")+'/',
+                        urlSuffix:'?',
                         p_uusin:false,
                         p_tiivis:false,
                         h_uusin:req.session.h_uusin,
-                        h_tiivis:req.session.h_tiivis,
+                        //h_tiivis:req.session.h_tiivis,
                         p_tietoa:true
                     });	
                     break;

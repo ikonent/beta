@@ -22,15 +22,15 @@
   
                 // Jos salasana ei syötetty
                 if (password1 == '')
-                    alert ("Anna salasana.");
+                    alert (<%=dict.translate("uusi_kayttaja.vikaPassu")%>);
                       
                 // Jos sama salasana ei syötetty
                 else if (password2 == '')
-                    alert ("Anna salasana uudelleen.");
+                    alert (<%=dict.translate("uusi_kayttaja.vikaPassu2")%>);
                       
                 // Jos salasanat ei täsmää...   
                 else if (password1 != password2) {
-                    alert ("\nSalasana ei täsmää, yritä uudelleen...")
+                    alert (<%=dict.translate("uusi_kayttaja.vikaEiTasmaa")%>)
                     return false;
                 }
  
@@ -40,22 +40,22 @@
                 }
             }
         </script>
-        <nav class="serif row"><a href="/">Aiheet</a>&nbsp;> Luo uusi tunnus
+        <nav class="serif row"><a href="/<%=addToUrl%>"><%=dict.translate("common.aiheet")%></a>&nbsp;> <%=dict.translate("uusi_kayttaja.title")%>
         </nav>
-        <h2  class="serif">Luo uusi käyttäjätunnus</h2>
-        <form method='POST' onSubmit="return checkPassword(this)">
+        <h2  class="serif"><%=dict.translate("uusi_kayttaja.otsikko")%></h2>
+        <form method='POST' onSubmit="return checkPassword(this)" href='/<%=dict.translate("urls.kayttajat") + "/" + dict.translate("urls.rekisteroityminen")+addToUrl%>'>
             <div>
-                <label for="userid" class="serif">Käyttäjätunnus</label><br>
-                <input type="text" placeholder="Tunnus" name="userid" required="true" value=""><br>
-                <label for="passwd"  class="serif">Salasana</label><br>
-                <input id="password" type="password" placeholder="Salasana" name="passwd" required='true' value=""><br>
-                <label for="pwd2" class="serif">Anna salasana uudelleen</label><br>
-                <input id="pwd2" required="true" type="password" name="pwd2" placeholder="Sama salasana" value=""><span id='message'></span><br>
+                <label for="userid" class="serif"><%=dict.translate("uusi_kayttaja.kTunnus")%></label><br>
+                <input type="text" placeholder="<%=dict.translate("uusi_kayttaja.tunnus")%>" name="userid" required="true" value=""><br>
+                <label for="passwd"  class="serif"><%=dict.translate("uusi_kayttaja.salasana")%></label><br>
+                <input id="password" type="password" placeholder="<%=dict.translate("uusi_kayttaja.salasanaPlaceholder")%>" name="passwd" required='true' value=""><br>
+                <label for="pwd2" class="serif"><%=dict.translate("uusi_kayttaja.salasana2")%></label><br>
+                <input id="pwd2" required="true" type="password" name="pwd2" placeholder="<%=dict.translate("uusi_kayttaja.salasana2Placeholder")%>" value=""><span id='message'></span><br>
                 <input id="ohjeetluettu" name="ohjeetluettu" required="true" type="checkbox">
-                <label for="ohjeetluettu" on  class="serif">Olen lukenut <a onclick="varmista()" href=""  class="serif" >foorumin ohjeet</a></label><br>
+                <label for="ohjeetluettu" on  class="serif"><%=dict.translate("uusi_kayttaja.olenLukenut")%> <a onclick="varmista()" href=""  class="serif" ><%=dict.translate("uusi_kayttaja.fooruminOhjeet")%></a></label><br>
             </div>
-            <button id="submit" type="submit" class="serif btn btn-dark" name="LuoTunnus" value="Luo tili">Luo käyttäjätunnus</button>
-            <button type="button" class="serif btn btn-dark m-2" onclick="location='/';return false;" Value="Peru" formnovalidate>Peru</button>
+            <button id="submit" type="submit" class="serif btn btn-dark" name="LuoTunnus" value="Luo tili"><%=dict.translate("uusi_kayttaja.luoTunnusPainike")%></button>
+            <button type="button" class="serif btn btn-dark m-2" onclick="location='/<%=addToUrl%>';return false;" Value="Peru" formnovalidate><%=dict.translate("uusi_kayttaja.peruPainike")%></button>
         </form>
     </main>
         <% include footer %>

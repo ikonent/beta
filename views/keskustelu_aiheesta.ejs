@@ -77,17 +77,20 @@
 
                     if(this.id =='jatkoon') {
                         // if message is dropped on edit-area
-                        let url = '/uusi_viesti/?muokkaa='+iidee;
+                        let url = '/'+dict.translate("urls.uusi_viesti")+addToUrl+'/?muokkaa='+iidee;
+                        console.log("editUrl "+url);
                         location = url;
                     } else { //ts. poistoon
                         // if message is droppedn on delete-area
                         let muuId = etsiMuuId(iidee); // get id of another message to return to the same conversation
                         if (muuId == undefined) { // if there is none, set only delid
-                            let url = '/?delid='+iidee;
+                            let url = '/'+addToUrl+'?delid='+iidee;
+                            console.log("delUrl "+url);
                             location = url;               
                         } else {
                             // if another message is found, set also that
-                            let url = '/?id='+muuId+'&delid='+iidee;
+                            let url = '/'+addToUrl+'?id='+muuId+'&delid='+iidee;
+                            console.log("delUrl "+url)
                             location = url;                
                         };
                     };
@@ -115,7 +118,7 @@
         <% include hallinta %>
         <div class="dropzone" id="poistoon" ></div>
         <main class="flex justify-content-center flex-column">
-            <div class="serif"><a href="/"><%=dict.translate("common.aiheet") %></a> > <%=dict.translate('aiheesta.title')%>:
+            <div class="serif"><a href="/<%=addToUrl%>"><%=dict.translate("common.aiheet") %></a> > <%=dict.translate('aiheesta.title')%>:
             </div>
 
             <section><h2 class="serif"><%= messages[0].topic %></h2></section>
