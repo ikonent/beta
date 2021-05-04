@@ -145,7 +145,7 @@
         <!-- Vaihda kieltä painikkeet -->
         <div class="dropdown show">
             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= dict.translate("hallinta.kieliValinta")%>
+                <%= dict.getCurrentLocale().language.toUpperCase()%>
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <% for (const [key,value] of Object.entries(dict.dicts)) {%>
