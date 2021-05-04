@@ -18,14 +18,23 @@
                     e.stopPropagation();
                     e.dataTransfer.effectAllowed = 'move';
                     // Define content
-                    e.dataTransfer.setData('text/plain', e.target.id);                    
+                    e.dataTransfer.setData('text/plain', e.target.id);                 
+                    // Define what target zones are
+                    
                     // Change possible target attributes to make dropzones more visible
-                    targetit.forEach(item =>{
-                        item.style.width='35%';
-                        item.style.zIndex='50';
-                        item.classList.add('hilit_dz');
-                        e.target.style.opacity='.4';       
-                    });
+                    
+                    setTimeout(() => {
+                        // These need to be in a setTimeOut to pass a bug in browser
+                        targetit.forEach(item => {
+                            item.style.width='40%';
+                            item.style.zIndex='50';
+                            item.classList.add('hilit_dz');
+                            e.target.style.opacity='.4';
+                        
+                        
+                        });
+                    }, 0)
+                    
                 };
 
                 // End drag
@@ -33,6 +42,7 @@
                     // Return opacity of dragged object
                     this.style.opacity='1';
                     // Return attributes of target areas
+                    console.log(targetit);
                     targetit.forEach(item =>{
                         item.style.width='5%';
                         item.classList.remove('hilit_dz');
@@ -40,8 +50,7 @@
                         e.target.style.opacity='1';
                     });
                 };
-                // Define what target zones are
-                const targetit = document.querySelectorAll('.dropzone');
+                const targetit = document.querySelectorAll('.pudotusalue');
                 // Define properties for target zones
                 targetit.forEach(item => {
                     item.addEventListener('dragenter', dragEnter);
@@ -60,6 +69,7 @@
                 };
                 // Change drag over effect
                 function dragOver(e){
+                    
                     e.preventDefault();
 
                 };
@@ -119,7 +129,7 @@
         <% include ggl_analytics_body %>
         <% include header %>
         <% include hallinta %>
-        <div class="dropzone" id="poistoon" ></div>
+        <div class="pudotusalue" id="poistoon" ></div>
         <main class="flex justify-content-center flex-column">
             <div class="serif"><a href="/<%=addToUrl%>"><%=dict.translate("common.aiheet") %></a> > <%=dict.translate('aiheesta.title')%>:
             </div>
@@ -158,6 +168,6 @@
             </script>
         </main>
         <% include footer %>
-        <div class="dropzone" id="jatkoon"></div> <!-- ondrop="drop(event)" ondragover="allowDrop(event)" -->
+        <div class="pudotusalue" id="jatkoon"></div> <!-- ondrop="drop(event)" ondragover="allowDrop(event)" -->
     </body>
 </html>

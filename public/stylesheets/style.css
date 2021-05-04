@@ -220,7 +220,7 @@ footer{
     visibility: collapse;
 }
 #poistoon {
-   /* background-color: green;*/
+    /*background-color: green;*/
     float:left;
     left:0;
 }
@@ -245,10 +245,10 @@ footer{
     background-repeat: no-repeat;
     background-image: url('/images/poista_bg.png');
 }
-.dropzone {
+.pudotusalue {
     display: block;
     position: fixed;
-    width: 10%; 
+    width: 5%; 
     height: 100%;
     top:0;
     z-index: -50;
