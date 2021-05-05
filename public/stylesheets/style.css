@@ -262,6 +262,11 @@ footer{
  .serif.row {
     margin: 0px !important;
 }
+/*to remove standard padding and margins for p*/
+section.no-bg p {
+    padding-left: 0px !important;
+    margin-left: 0px !important;
+}
 
 
 /* Asemoinnit eri levyisille ruuduille */
