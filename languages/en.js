@@ -24,7 +24,7 @@ module.exports = {
     },
     common: {
         aiheet:"Topics",
-        kielella:"In English"
+        kielella:"EN"
     },
     index: {
         title:"All topics",
