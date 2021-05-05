@@ -14,16 +14,16 @@
             </nav>
             <section class="serif">
                 <div class="row">
-                    <span class="col-sm-8"><%= dict.translate("index.otsikko")  %></span>
-                    <span  class="col-sm-1"><%= dict.translate("index.lkm")  %></span>
+                    <span class="col-sm-7"><%= dict.translate("index.otsikko")  %></span>
+                    <span  class="col-sm-2"><%= dict.translate("index.lkm")  %></span>
                     <span  class="col-sm-3"><%= dict.translate("index.uusinKirjoittaja")  %></span>
                 </div>
             </section>
             <section>
                 <% for(var i=0; i < messages.length; i++) { %>
                 <a href="/<%=dict.translate('urls.keskustelu')+'/'+addToUrl%>?id=<%= messages[i].uusin %>" class="row o_linkki">
-                    <b class="col-sm-8"><%= messages[i].topic %></b>
-                    <span class="col-sm-1"><%= messages[i].lukum %></span>
+                    <b class="col-sm-7"><%= messages[i].topic %></b>
+                    <span class="col-sm-2"><%= messages[i].lukum %></span>
                     <span class="col-sm-3"><%= messages[i].sender %></span>
             
                 </a>
