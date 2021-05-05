@@ -25,7 +25,7 @@ module.exports ={
     },
     common: {
         aiheet:"Aiheet",
-        kielella:"Suomeksi"
+        kielella:"FI"
     },
     index: {
         title:'Kaikki keskustelunaiheet',
