@@ -258,6 +258,11 @@ footer{
 .dropdown-menu {
     min-width: 5rem;
 }
+/*to aligh aiheet*/
+ .serif.row {
+    margin: 0px !important;
+}
+
 
 /* Asemoinnit eri levyisille ruuduille */
 @media screen and (max-width:1050px) {
@@ -300,7 +305,7 @@ footer{
         margin-left: .7rem;
     }
 
-    svg#login, svg#uusiviesti, svg#uusin_alinna, svg#tietoa, svg#viestit, svg#uusin_ylinna{
+    svg#login, svg#uusiviesti, svg#uusin_alinna, svg#tietoa, svg#viestit, svg#uusin_ylinna, svg#logout{
     width: 2.5rem;
     }
 
@@ -314,14 +319,14 @@ footer{
 
 
 @media (max-width:390px) {
-    svg#login, svg#uusiviesti, svg#uusin_alinna, svg#tietoa, svg#viestit, svg#uusin_ylinna {
+    svg#login, svg#uusiviesti, svg#uusin_alinna, svg#tietoa, svg#viestit, svg#uusin_ylinna, svg#logout {
     width: 2rem;
     }
 }
 
 
 @media (max-width:344px) {
-    svg#login, svg#uusiviesti, svg#uusin_alinna, svg#tietoa, svg#viestit, svg#uusin_ylinna {
+    svg#login, svg#uusiviesti, svg#uusin_alinna, svg#tietoa, svg#viestit, svg#uusin_ylinna, svg#logout {
     width: 1.7rem;
     }
 }
