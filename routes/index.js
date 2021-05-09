@@ -504,7 +504,7 @@ router.post('/:page('+viesti_urls.join('|')+')/:lang([a-z]{2})?/', function(req,
                     onLogPage:false,
                     onSignPage:false,
                     currUrl:'/'+locale.translate("urls.alert")+'/',
-            urlSuffix:'?',
+                    urlSuffix:'?',
                     topikki:'',
                     p_uusin:false,
                     p_tiivis:false,
@@ -525,7 +525,18 @@ router.post('/:page('+viesti_urls.join('|')+')/:lang([a-z]{2})?/', function(req,
                     title:locale.translate("alert.pieleenMeni"),
                     dict:locale,
                     addToUrl:add2Url,
-                    returl:'/'+locale.translate("urls.uusi_viesti")+'/'+add2Url
+                    returl:'/'+locale.translate("urls.uusi_viesti")+'/'+add2Url,
+                    login: req.session.userid,                            
+                    onLogPage:false,
+                    onSignPage:false,
+                    currUrl:'/'+locale.translate("urls.alert")+'/',
+                    urlSuffix:'?',
+                    topikki:'',
+                    p_uusin:false,
+                    p_tiivis:false,
+                    h_uusin:req.session.h_uusin,
+                    h_tiivis:req.session.h_tiivis,
+                    p_tietoa:true
                 });
             }
         });
