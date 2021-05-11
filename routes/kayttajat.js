@@ -71,7 +71,9 @@ router.get('/:page('+kirj_urls.join('|')+')/:lang([a-z]{2})?', function(req, res
             p_tietoa:true
 		});
 	else {
+        // Destroy session to log user out
 		req.session.destroy();
+        // Return to index
 		return res.status(302).redirect('/'+add2Url);
 	}
 });
@@ -280,7 +282,7 @@ router.post('/:page('+uusiKayttaja_urls.join('|')+')/:lang([a-z]{2})?', (req, re
                         p_uusin:false,
                         p_tiivis:false,
                         h_uusin:req.session.h_uusin,
-                        //h_tiivis:req.session.h_tiivis,
+                        h_tiivis:req.session.h_tiivis,
                         p_tietoa:true
                     });	
                     break;
@@ -299,7 +301,7 @@ router.post('/:page('+uusiKayttaja_urls.join('|')+')/:lang([a-z]{2})?', (req, re
                         p_uusin:false,
                         p_tiivis:false,
                         h_uusin:req.session.h_uusin,
-                        //h_tiivis:req.session.h_tiivis,
+                        h_tiivis:req.session.h_tiivis,
                         p_tietoa:true
                     });	
                     break;
