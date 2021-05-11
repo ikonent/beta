@@ -50,7 +50,7 @@
                         e.target.style.opacity='1';
                     });
                 };
-                const targetit = document.querySelectorAll('.pudotusalue');
+                const targetit = document.querySelectorAll('.dropzone');
                 // Define properties for target zones
                 targetit.forEach(item => {
                     item.addEventListener('dragenter', dragEnter);
@@ -129,7 +129,7 @@
         <% include ggl_analytics_body %>
         <% include header %>
         <% include hallinta %>
-        <div class="pudotusalue" id="poistoon" ></div>
+        <div class="dropzone" id="poistoon" ></div>
         <main class="flex justify-content-center flex-column">
             <div class="serif"><a href="/<%=addToUrl%>"><%=dict.translate("common.aiheet") %></a> > <%=dict.translate('aiheesta.title')%>:
             </div>
@@ -168,6 +168,6 @@
             </script>
         </main>
         <% include footer %>
-        <div class="pudotusalue" id="jatkoon"></div> <!-- ondrop="drop(event)" ondragover="allowDrop(event)" -->
+        <div class="dropzone" id="jatkoon"></div> <!-- ondrop="drop(event)" ondragover="allowDrop(event)" -->
     </body>
 </html>
